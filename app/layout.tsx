@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Cheesy. Spicy. Ready in 15 mins.',
   icons: {
     icon: '/icon.png',
-    shortcut: '/favicon.ico',
+    shortcut: '/icon.png',
     apple: '/icon.png',
   },
 };
