@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, MapPin, Truck, Utensils, ShoppingBag } from "lucide-react";
+import { Clock, MapPin, Truck, Utensils, ShoppingBag, Phone, Mail } from "lucide-react";
 import { getFormattedHours, isStoreOpen, SERVICES } from "@/lib/utils/businessHours";
 import { useEffect, useState } from "react";
 
@@ -63,6 +63,34 @@ export default function InfoSection() {
                                     <span className="font-bold text-gray-700">{service}</span>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+
+                    {/* Contact Column */}
+                    <div className="md:col-span-2 mt-8 border-t border-gray-200 pt-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                            <div className="flex flex-col items-center md:items-start">
+                                <MapPin className="text-metro mb-2" size={24} />
+                                <h3 className="font-bold text-gray-900">Visit Us</h3>
+                                <p className="text-gray-600 text-sm mt-1">
+                                    Next to Shwapno, Cosmopolitan, 2 No Gate<br />
+                                    Bayezid Bostami Road, Chittagong, Bangladesh, 4209
+                                </p>
+                            </div>
+                            <div className="flex flex-col items-center md:items-start">
+                                <Phone className="text-cheese mb-2" size={24} />
+                                <h3 className="font-bold text-gray-900">Call Us</h3>
+                                <p className="text-gray-600 text-sm mt-1">
+                                    <a href="tel:+8801841942805" className="hover:text-metro transition-colors">01841-942805</a>
+                                </p>
+                            </div>
+                            <div className="flex flex-col items-center md:items-start">
+                                <Mail className="text-metro mb-2" size={24} />
+                                <h3 className="font-bold text-gray-900">Email Us</h3>
+                                <p className="text-gray-600 text-sm mt-1">
+                                    <a href="mailto:metromeals.operation@gmail.com" className="hover:text-metro transition-colors">metromeals.operation@gmail.com</a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -51,7 +51,12 @@ export default function HeroSection() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => {
-                        document.getElementById("menu-start")?.scrollIntoView({ behavior: "smooth" });
+                        const menuSection = document.getElementById("menu-start");
+                        if (menuSection) {
+                            menuSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                        } else {
+                            console.error("Menu section not found!");
+                        }
                     }}
                     className="bg-metro text-white font-bold text-xl px-8 py-4 rounded-full shadow-[0_4px_14px_0_rgba(230,33,41,0.39)] hover:shadow-[0_6px_20px_rgba(230,33,41,0.23)] hover:bg-red-600 transition-all mt-8 mb-8"
                 >

@@ -6,6 +6,7 @@ import { useCartStore } from "@/lib/store/cartStore";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { getCustomerSession } from "@/lib/auth";
 
 export default function CartSheet() {
     const { cart, getCartTotal, isStudentDiscountActive, clearCart, updateQuantity, removeFromCart } = useCartStore();
@@ -19,6 +20,15 @@ export default function CartSheet() {
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
         setMounted(true);
+        // Auto-fill from session
+        const fetchSession = async () => {
+            const { getCustomerSession } = await import("@/lib/auth");
+            const session = await getCustomerSession();
+            if (session) {
+                setFormData(prev => ({ ...prev, phone: session.phone }));
+            }
+        };
+        fetchSession();
     }, []);
 
     const total = getCartTotal();
@@ -45,24 +55,26 @@ export default function CartSheet() {
         setIsSubmitting(true);
 
         try {
-            const res = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cart,
-                    customer: formData,
-                    total: finalTotal
-                })
+            // Import dynamically or pass as prop if needed, but for now calling the server action
+            const { placeOrder } = await import("@/app/actions/placeOrder");
+
+            const result = await placeOrder(null, {
+                cart,
+                customer: formData,
+                total: finalTotal
             });
 
-            if (res.ok) {
+            if (result.success) {
                 clearCart();
                 setIsOpen(false);
                 setShowCheckoutForm(false);
                 router.push('/success');
+            } else {
+                alert("Failed to place order: " + (result.error || "Unknown error"));
             }
         } catch (error) {
             console.error("Checkout failed", error);
+            alert("An unexpected error occurred.");
         } finally {
             setIsSubmitting(false);
         }
@@ -73,53 +85,24 @@ export default function CartSheet() {
     return (
         <>
             <AnimatePresence>
-                {!isOpen && (
+                {(!isOpen && mounted) && (
                     <motion.div
-                        initial={{ y: 100, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 100, opacity: 0 }}
-                        className="fixed bottom-6 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:w-96 z-50 cursor-pointer"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        className="fixed bottom-6 right-4 md:right-8 z-[9999] cursor-pointer"
                         onClick={() => setIsOpen(true)}
                     >
-                        <div className="bg-metro text-white p-4 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-2 border-white/20 backdrop-blur-md flex items-center gap-4 hover:scale-[1.02] transition-transform">
-                            {/* Icon & Badge */}
-                            <div className="relative shrink-0">
-                                <div className="bg-white/20 p-3 rounded-full">
-                                    <ShoppingBag size={24} />
-                                </div>
-                                <span className="absolute -top-1 -right-1 bg-cheese text-black text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border border-metro shadow-sm">
+                        <div className="bg-metro text-white p-4 rounded-full shadow-2xl border-4 border-white flex items-center gap-3 hover:scale-110 transition-transform">
+                            <div className="relative">
+                                <ShoppingBag size={24} />
+                                <span className="absolute -top-2 -right-2 bg-cheese text-black text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border border-metro">
                                     {cart.length}
                                 </span>
                             </div>
-
-                            {/* Text Info */}
-                            <div className="flex-1 min-w-0">
-                                <div className="flex justify-between items-end mb-1">
-                                    <p className="font-heading font-bold text-lg leading-none">View Tray</p>
-                                    <p className="font-bold text-lg leading-none">৳{total}</p>
-                                </div>
-
-                                {/* Mini Progress Bar */}
-                                <div className="w-full bg-black/20 h-1.5 rounded-full overflow-hidden mb-1">
-                                    <motion.div
-                                        className={cn("h-full", discountActive ? "bg-green-400" : "bg-cheese")}
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${progress}%` }}
-                                    />
-                                </div>
-                                <p className="text-[10px] md:text-xs text-white/90 font-medium truncate">
-                                    {discountActive
-                                        ? "🎉 15% Discount Unlocked!"
-                                        : `Add ৳${remaining} to unlock 15% OFF`
-                                    }
-                                </p>
-                            </div>
-
-                            {/* Arrow/Action */}
-                            <div className="shrink-0 text-white/50">
-                                <div className="bg-white/10 p-1 rounded-lg">
-                                    <ShoppingBag size={16} className="rotate-12" />
-                                </div>
+                            <div className="hidden md:block">
+                                <p className="font-bold text-sm">View Tray</p>
+                                <p className="text-xs font-medium">৳{total}</p>
                             </div>
                         </div>
                     </motion.div>
