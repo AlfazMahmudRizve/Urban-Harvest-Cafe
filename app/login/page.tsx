@@ -98,10 +98,10 @@ export default function CustomerLogin() {
                     )}
 
                     <div>
-                        <label className="block text-xs font-bold text-espresso/50 uppercase mb-1">Mobile Number</label>
+                        <label className="block text-xs font-bold text-espresso/50 uppercase mb-1">Mobile Number / Username</label>
                         <input
                             name="phone"
-                            type="tel"
+                            type="text" // changed from tel to text to allow 'admin'
                             required
                             className="w-full p-3 bg-cream rounded-xl border border-latte/20 outline-none focus:ring-2 focus:ring-espresso font-medium text-espresso"
                             placeholder="01712345678"

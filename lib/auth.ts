@@ -121,6 +121,20 @@ export async function loginCustomer(formData: FormData) {
     const phone = formData.get("phone") as string;
     const password = formData.get("password") as string;
 
+    // Check for Admin Login
+    if (phone === "admin") {
+        const adminFormData = new FormData();
+        adminFormData.append("username", phone);
+        adminFormData.append("password", password);
+
+        const adminResult = await loginAdmin(adminFormData);
+        if (adminResult.success) {
+            return { success: true, redirect: "/dashboard" };
+        } else {
+            return { success: false, error: "Invalid admin credentials" };
+        }
+    }
+
     try {
         // Fetch user
         const { data: customer, error } = await supabase

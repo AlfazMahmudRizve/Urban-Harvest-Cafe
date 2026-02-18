@@ -14,6 +14,7 @@ export default function CartSheet() {
     const [showCheckoutForm, setShowCheckoutForm] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({ name: "", phone: "", tableNumber: "", address: "" });
+    const [orderType, setOrderType] = useState<'dine-in' | 'takeout' | 'delivery'>('dine-in');
     const router = useRouter();
 
     // Hydration Fix
@@ -68,7 +69,7 @@ export default function CartSheet() {
 
             const result = await placeOrder(null, {
                 cart,
-                customer: formData,
+                customer: { ...formData, orderType },
                 total: finalTotal
             });
 
@@ -184,6 +185,25 @@ export default function CartSheet() {
                                     ))
                                 ) : (
                                     <form id="checkout-form" onSubmit={handleCheckout} className="space-y-4">
+                                        {/* Order Type Selector */}
+                                        <div className="grid grid-cols-3 gap-2 bg-gray-100 p-1 rounded-xl">
+                                            {(['dine-in', 'takeout', 'delivery'] as const).map((type) => (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    onClick={() => setOrderType(type)}
+                                                    className={cn(
+                                                        "py-2 rounded-lg text-xs md:text-sm font-bold capitalize transition-all",
+                                                        orderType === type
+                                                            ? "bg-white text-espresso shadow-sm"
+                                                            : "text-gray-500 hover:text-espresso"
+                                                    )}
+                                                >
+                                                    {type.replace("-", " ")}
+                                                </button>
+                                            ))}
+                                        </div>
+
                                         <div>
                                             <label className="block text-sm font-bold text-espresso mb-1">Name</label>
                                             <input
@@ -206,25 +226,33 @@ export default function CartSheet() {
                                                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-espresso mb-1">Table No (Dine-in)</label>
-                                            <input
-                                                type="text"
-                                                placeholder="05"
-                                                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none bg-gray-50"
-                                                value={formData.tableNumber}
-                                                onChange={e => setFormData({ ...formData, tableNumber: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-espresso mb-1">Address (Delivery)</label>
-                                            <textarea
-                                                placeholder="House 12, Road 5..."
-                                                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none bg-gray-50"
-                                                value={formData.address}
-                                                onChange={e => setFormData({ ...formData, address: e.target.value })}
-                                            />
-                                        </div>
+
+                                        {orderType === 'dine-in' && (
+                                            <div className="animate-in fade-in slide-in-from-top-1">
+                                                <label className="block text-sm font-bold text-espresso mb-1">Table No</label>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    placeholder="05"
+                                                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none bg-gray-50"
+                                                    value={formData.tableNumber}
+                                                    onChange={e => setFormData({ ...formData, tableNumber: e.target.value })}
+                                                />
+                                            </div>
+                                        )}
+
+                                        {orderType === 'delivery' && (
+                                            <div className="animate-in fade-in slide-in-from-top-1">
+                                                <label className="block text-sm font-bold text-espresso mb-1">Address</label>
+                                                <textarea
+                                                    required
+                                                    placeholder="House 12, Road 5..."
+                                                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none bg-gray-50"
+                                                    value={formData.address}
+                                                    onChange={e => setFormData({ ...formData, address: e.target.value })}
+                                                />
+                                            </div>
+                                        )}
                                     </form>
                                 )}
                             </div>

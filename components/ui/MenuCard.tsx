@@ -85,7 +85,7 @@ export default function MenuCard({ id, name, price, image, tags }: MenuCardProps
                     className="w-full bg-espresso text-cream font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-espresso/90 shadow-md hover:shadow-lg mt-auto font-sans"
                 >
                     <Plus size={18} />
-                    Add to Table
+                    Add to Tray
                 </motion.button>
             </div>
         </motion.div>

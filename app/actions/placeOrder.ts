@@ -20,6 +20,14 @@ const OrderSchema = z.object({
         phone: z.string().min(11, "Phone must be at least 11 digits"),
         address: z.string().optional(),
         tableNumber: z.string().optional(),
+        orderType: z.enum(['dine-in', 'takeout', 'delivery']),
+    }).refine((data) => {
+        if (data.orderType === 'dine-in' && !data.tableNumber) return false;
+        if (data.orderType === 'delivery' && !data.address) return false;
+        return true;
+    }, {
+        message: "Table Number is required for Dine-in, Address is required for Delivery",
+        path: ["tableNumber"], // simplistic error path
     }),
     cart: z.array(z.object({
         id: z.string(),
@@ -105,8 +113,8 @@ export async function placeOrder(prevState: any, formData: any) {
                 total_amount: total,
                 status: "pending", // Default status
                 delivery_address: customer.address,
-                table_number: customer.tableNumber,
-                order_type: customer.tableNumber ? "dine-in" : "delivery"
+                table_number: customer.orderType === 'dine-in' ? customer.tableNumber : null,
+                order_type: customer.orderType
             })
             .select("id")
             .single();
@@ -123,7 +131,9 @@ export async function placeOrder(prevState: any, formData: any) {
 
 👤 *Customer*: ${customer.name}
 📞 *Phone*: ${customer.phone}
-${customer.tableNumber ? `🍽 *Table*: ${customer.tableNumber}` : `🚚 *Delivery*: ${customer.address}`}
+🚀 *Type*: ${customer.orderType.toUpperCase()}
+${customer.orderType === 'dine-in' ? `🍽 *Table*: ${customer.tableNumber}` : ''}
+${customer.orderType === 'delivery' ? `🚚 *Address*: ${customer.address}` : ''}
 
 🛒 *Items*:
 ${itemsList}

@@ -160,8 +160,8 @@ export default function AdminDashboard() {
                         <button
                             onClick={handleToggleStore}
                             className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold transition-all shadow-sm border active:scale-95 ${storeStatus.isOpen
-                                    ? "bg-green-100 text-green-700 border-green-200 hover:bg-green-200"
-                                    : "bg-red-100 text-red-700 border-red-200 hover:bg-red-200"
+                                ? "bg-green-100 text-green-700 border-green-200 hover:bg-green-200"
+                                : "bg-red-100 text-red-700 border-red-200 hover:bg-red-200"
                                 }`}
                         >
                             <div className={`w-3 h-3 rounded-full ${storeStatus.isOpen ? "bg-green-500 animate-pulse" : "bg-red-500"}`} />
@@ -441,8 +441,14 @@ function OrderCard({ order, onAction, actionLabel, actionColor, isPending, isCom
 
             {/* Footer: Type & Total */}
             <div className="flex justify-between items-center pt-2">
-                <span className={`text-xs font-bold px-2 py-1 rounded-md ${order.order_type === 'dine-in' ? "bg-blue-50 text-blue-700" : "bg-orange-50 text-orange-700"}`}>
-                    {order.order_type === 'dine-in' ? `🍽 Table ${order.table_number}` : '🚚 Delivery'}
+                <span className={`text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1 ${order.order_type === 'dine-in' ? "bg-blue-50 text-blue-700" :
+                        order.order_type === 'takeout' ? "bg-purple-50 text-purple-700" :
+                            "bg-orange-50 text-orange-700"
+                    }`}>
+                    {order.order_type === 'dine-in' && <>🍽 T-{order.table_number}</>}
+                    {order.order_type === 'takeout' && <>🛍️ Takeout</>}
+                    {order.order_type === 'delivery' && <>🚚 Delivery</>}
+                    {(!order.order_type) && <>🚚 Delivery</>} {/* Fallback for old orders */}
                 </span>
                 <span className="font-extrabold text-lg text-gray-900">৳{order.total_amount}</span>
             </div>
