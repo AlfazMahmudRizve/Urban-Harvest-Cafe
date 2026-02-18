@@ -103,9 +103,18 @@ export default function ProfilePage() {
                         <h1 className="text-3xl font-bold font-heading">My Profile</h1>
                         <p className="opacity-80 font-sans">Welcome back, {customer?.name}!</p>
                     </div>
-                    <button onClick={handleLogout} className="bg-white/10 hover:bg-white/20 p-2 rounded-full backdrop-blur-sm transition-colors">
-                        <LogOut size={20} />
-                    </button>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => router.push("/")}
+                            className="bg-cream text-espresso px-4 py-2 rounded-full font-bold shadow-lg hover:bg-white transition-all active:scale-95 flex items-center gap-2"
+                        >
+                            <ShoppingBag size={18} />
+                            Order More
+                        </button>
+                        <button onClick={handleLogout} className="bg-white/10 hover:bg-white/20 p-2 rounded-full backdrop-blur-sm transition-colors text-white">
+                            <LogOut size={20} />
+                        </button>
+                    </div>
                 </div>
             </div>
 
