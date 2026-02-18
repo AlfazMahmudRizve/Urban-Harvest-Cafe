@@ -1,9 +1,16 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ShieldCheck, Heart, User } from "lucide-react";
+import { getStoreStatus } from "@/app/actions/storeStatus";
 
 export default function HeroSection() {
+    const [storeStatus, setStoreStatus] = useState<{ isOpen: boolean } | null>(null);
+
+    useEffect(() => {
+        getStoreStatus().then(setStoreStatus);
+    }, []);
     return (
         <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden bg-espresso flex items-center justify-center">
             {/* Background Image with Slow Zoom */}
@@ -22,7 +29,18 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Content */}
-            <div className="absolute top-6 right-6 z-30">
+            <div className="absolute top-6 right-6 z-30 flex items-center gap-3">
+                {/* Store Status Indicator */}
+                {storeStatus && (
+                    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full font-bold text-xs backdrop-blur-md border shadow-sm ${storeStatus.isOpen
+                        ? "bg-green-500/10 border-green-400 text-green-100"
+                        : "bg-red-500/10 border-red-400 text-red-100"
+                        }`}>
+                        <div className={`w-2 h-2 rounded-full ${storeStatus.isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
+                        {storeStatus.isOpen ? "OPEN" : "CLOSED"}
+                    </div>
+                )}
+
                 <a href="/profile" className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-cream px-4 py-2 rounded-full font-bold text-sm hover:bg-white/20 transition-all font-sans">
                     <User size={18} /> My Profile
                 </a>

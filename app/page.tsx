@@ -73,10 +73,6 @@ export default function Home() {
       {/* Loyalty Banner - Unique Positioning */}
       <LoyaltyBanner />
 
-      {/* Info Section - Hours & Services */}
-      <InfoSection />
-
-      {/* Sticky Nav */}
       <div id="menu-start" className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-latte/20 py-4 px-4 overflow-x-auto no-scrollbar">
         <div className="flex gap-4 md:justify-center min-w-max">
           {categories.filter(c => c !== "All").map((cat) => (
@@ -118,6 +114,10 @@ export default function Home() {
           );
         })}
       </div>
+
+      {/* Info Section - Hours & Services (Moved Below Menu) */}
+      <InfoSection />
+
 
       <CartSheet />
     </main>
