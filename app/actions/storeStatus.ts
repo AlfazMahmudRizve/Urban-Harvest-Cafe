@@ -9,31 +9,67 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PU
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function getStoreStatus() {
-    // 1. Check for Manual Override
+    let isOpen = false;
+    let message = "";
+    let isManual = false;
+    let expiresAt: string | undefined = undefined;
+
+    // 1. Fetch Store Settings (Override + Overload Config)
     const { data: settings } = await supabase
         .from("store_settings")
-        .select("manual_status, override_expires_at")
+        .select("manual_status, override_expires_at, max_active_orders, base_prep_time, prep_time_per_order")
         .eq("id", 1)
         .single();
 
+    // Configuration defaults in case they haven't been set
+    const maxActiveOrders = settings?.max_active_orders || 15;
+    const basePrepTime = settings?.base_prep_time || 10;
+    const prepTimePerOrder = settings?.prep_time_per_order || 3;
+
     if (settings && settings.manual_status && settings.override_expires_at) {
-        const expiresAt = new Date(settings.override_expires_at);
-        if (expiresAt > new Date()) {
-            const isOpen = settings.manual_status === "OPEN";
-            return {
-                isOpen,
-                message: isOpen
-                    ? `Store is Manually OPEN until ${expiresAt.toLocaleTimeString()}`
-                    : `Store is Manually CLOSED until ${expiresAt.toLocaleTimeString()}`,
-                isManual: true,
-                expiresAt: settings.override_expires_at
-            };
+        const overrideExpiresAt = new Date(settings.override_expires_at);
+        if (overrideExpiresAt > new Date()) {
+            isOpen = settings.manual_status === "OPEN";
+            message = isOpen
+                ? `Store is Manually OPEN until ${overrideExpiresAt.toLocaleTimeString([], {timeStyle: 'short'})}`
+                : `Store is Manually CLOSED until ${overrideExpiresAt.toLocaleTimeString([], {timeStyle: 'short'})}`;
+            isManual = true;
+            expiresAt = settings.override_expires_at;
         }
     }
 
     // 2. Fallback to Regular Schedule
-    const status = checkSchedule();
-    return { ...status, isManual: false };
+    if (!isManual) {
+        const status = checkSchedule();
+        isOpen = status.isOpen;
+        message = status.message;
+    }
+
+    // 3. Dynamic Overload Protection & Prep Time
+    const { count } = await supabase
+        .from('orders')
+        .select('*', { count: 'exact', head: true })
+        .in('status', ['pending', 'preparing']);
+
+    const activeOrders = count || 0;
+    
+    // Calculate dynamic wait time
+    const estimatedPrepTime = Math.min(basePrepTime + (activeOrders * prepTimePerOrder), maxActiveOrders * prepTimePerOrder * 1.5); 
+
+    if (isOpen && activeOrders >= maxActiveOrders) {
+        isOpen = false;
+        // Tell user it's overloaded
+        message = `Kitchen is currently overwhelmed. Please try again in ${estimatedPrepTime} minutes.`;
+    }
+
+    return { 
+        isOpen, 
+        message, 
+        isManual, 
+        expiresAt,
+        estimatedPrepTime,
+        activeOrders
+    };
 }
 
 export async function toggleStoreStatus(forceStatus: "OPEN" | "CLOSED" | null) {

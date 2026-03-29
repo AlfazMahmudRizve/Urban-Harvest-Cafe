@@ -9,19 +9,20 @@ import { CheckCircle, ArrowRight, Home } from "lucide-react";
 function SuccessContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get("id");
+    const eta = searchParams.get("eta") || "15-20";
 
     // Pizza Morph Animation Variant
     const pizzaVariants: Variants = {
-        initial: { scale: 0.8, opacity: 0, rotate: -180 },
+        initial: { scale: 0.8, opacity: 0, rotate: -20 },
         animate: {
             scale: 1,
             opacity: 1,
             rotate: 0,
             transition: {
                 type: "spring",
-                stiffness: 260,
-                damping: 20,
-                duration: 1.5
+                stiffness: 200,
+                damping: 18,
+                duration: 1
             }
         }
     };
@@ -73,7 +74,7 @@ function SuccessContent() {
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Order ID</p>
                     <p className="text-2xl font-mono font-bold text-espresso">#{orderId.slice(0, 8)}</p>
                     <div className="h-px bg-cream my-4" />
-                    <p className="text-sm text-espresso font-medium">Estimated Time: <span className="text-sage font-bold">20-30 mins</span></p>
+                    <p className="text-sm text-espresso font-medium">Estimated Time: <span className="text-sage font-bold">{eta} mins</span></p>
                 </motion.div>
             )}
 

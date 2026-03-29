@@ -11,10 +11,12 @@ export interface CartItem {
 
 interface CartState {
     cart: CartItem[];
+    scannedTableNumber: string | null;
     addToCart: (item: Omit<CartItem, 'quantity'>) => void;
     removeFromCart: (id: string) => void;
     updateQuantity: (id: string, delta: number) => void;
     clearCart: () => void;
+    setScannedTableNumber: (table: string | null) => void;
     getCartTotal: () => number;
     getFinalTotal: () => number;
     isStudentDiscountActive: () => boolean;
@@ -24,6 +26,8 @@ export const useCartStore = create<CartState>()(
     persist(
         (set, get) => ({
             cart: [],
+            scannedTableNumber: null,
+            setScannedTableNumber: (table) => set({ scannedTableNumber: table }),
             addToCart: (item) => {
                 const currentCart = get().cart;
                 const existingItem = currentCart.find((i) => i.id === item.id);

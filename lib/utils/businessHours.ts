@@ -12,13 +12,14 @@ export const SERVICES = ["Delivery", "Takeout", "Dine-in", "In-store pickup"];
 
 export function isStoreOpen(): { isOpen: boolean; nextOpen?: string; message: string } {
     const now = new Date();
-    // Convert to BD time if server is elsewhere, but for now assuming local machine time for simplified MVP or client-side check
-    // Ideally we use a library like date-fns-tz but native JS is fine for simple checks.
+    // Offset standard time (UTC) to BD time (UTC+6)
+    const dhakaTimeMs = now.getTime() + (6 * 60 * 60 * 1000);
+    const dhakaDate = new Date(dhakaTimeMs);
 
-    const day = now.getDay() as keyof typeof businessHours;
+    const day = dhakaDate.getUTCDay() as keyof typeof businessHours;
     const hours = businessHours[day];
 
-    const currentTime = now.getHours() * 60 + now.getMinutes();
+    const currentTime = dhakaDate.getUTCHours() * 60 + dhakaDate.getUTCMinutes();
     const [openH, openM] = hours.open.split(":").map(Number);
     const [closeH, closeM] = hours.close.split(":").map(Number);
 
@@ -29,7 +30,6 @@ export function isStoreOpen(): { isOpen: boolean; nextOpen?: string; message: st
         return { isOpen: true, message: "Open Now" };
     }
 
-    // Logic for "Opens at X" could be added here
     return { isOpen: false, message: `Closed. Opens at ${hours.open}` };
 }
 
@@ -44,30 +44,39 @@ export function getFormattedHours() {
 
 export function getNextScheduleChange(): Date {
     const now = new Date();
-    const day = now.getDay() as keyof typeof businessHours;
+    const dhakaTimeMs = now.getTime() + (6 * 60 * 60 * 1000);
+    const dhakaDate = new Date(dhakaTimeMs);
+    
+    const day = dhakaDate.getUTCDay() as keyof typeof businessHours;
     const hours = businessHours[day];
 
     const [openH, openM] = hours.open.split(":").map(Number);
     const [closeH, closeM] = hours.close.split(":").map(Number);
 
-    const openTime = new Date(now);
-    openTime.setHours(openH, openM, 0, 0);
+    const openTime = new Date(dhakaTimeMs);
+    openTime.setUTCHours(openH, openM, 0, 0);
 
-    const closeTime = new Date(now);
-    closeTime.setHours(closeH, closeM, 0, 0);
+    const closeTime = new Date(dhakaTimeMs);
+    closeTime.setUTCHours(closeH, closeM, 0, 0);
 
-    if (now < openTime) {
-        return openTime; // Will open later today
-    } else if (now < closeTime) {
-        return closeTime; // Will close later today
+    let nextTargetDhaka: Date;
+
+    if (dhakaDate < openTime) {
+        nextTargetDhaka = openTime; // Will open later today
+    } else if (dhakaDate < closeTime) {
+        nextTargetDhaka = closeTime; // Will close later today
     } else {
         // Will open tomorrow
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const nextDay = tomorrow.getDay() as keyof typeof businessHours;
+        const tomorrow = new Date(dhakaTimeMs);
+        tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+        const nextDay = tomorrow.getUTCDay() as keyof typeof businessHours;
         const nextHours = businessHours[nextDay];
         const [nextOpenH, nextOpenM] = nextHours.open.split(":").map(Number);
-        tomorrow.setHours(nextOpenH, nextOpenM, 0, 0);
-        return tomorrow;
+        tomorrow.setUTCHours(nextOpenH, nextOpenM, 0, 0);
+        nextTargetDhaka = tomorrow;
     }
+    
+    // Convert back from Dhaka relative to true UTC
+    const absoluteTimeMs = nextTargetDhaka.getTime() - (6 * 60 * 60 * 1000);
+    return new Date(absoluteTimeMs);
 }

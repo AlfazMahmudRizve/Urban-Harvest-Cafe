@@ -9,13 +9,14 @@ import { useRouter } from "next/navigation";
 import { getCustomerSession } from "@/lib/auth";
 
 export default function CartSheet() {
-    const { cart, getCartTotal, isStudentDiscountActive, clearCart, updateQuantity, removeFromCart } = useCartStore();
+    const { cart, getCartTotal, isStudentDiscountActive, clearCart, updateQuantity, removeFromCart, scannedTableNumber } = useCartStore();
     const [isOpen, setIsOpen] = useState(false);
     const [showCheckoutForm, setShowCheckoutForm] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({ name: "", phone: "", tableNumber: "", address: "" });
-    const [orderType, setOrderType] = useState<'dine-in' | 'takeout' | 'delivery'>('dine-in');
+    const [orderType, setOrderType] = useState<'dine-in' | 'takeout' | 'delivery'>(scannedTableNumber ? 'dine-in' : 'dine-in');
     const router = useRouter();
+    const isTableLocked = !!scannedTableNumber;
 
     // Hydration Fix
     const [mounted, setMounted] = useState(false);
@@ -31,6 +32,14 @@ export default function CartSheet() {
         };
         fetchSession();
     }, []);
+
+    // Auto-fill table number from QR scan
+    useEffect(() => {
+        if (scannedTableNumber) {
+            setFormData(prev => ({ ...prev, tableNumber: scannedTableNumber }));
+            setOrderType('dine-in');
+        }
+    }, [scannedTableNumber]);
 
     const total = getCartTotal();
     const discountActive = isStudentDiscountActive();
@@ -77,7 +86,7 @@ export default function CartSheet() {
                 clearCart();
                 setIsOpen(false);
                 setShowCheckoutForm(false);
-                router.push(`/success?id=${result.orderId}`);
+                router.push(`/success?id=${result.orderId}&eta=${status.estimatedPrepTime}`);
             } else {
                 setError("Failed to place order: " + (result.error || "Unknown error"));
             }
@@ -132,6 +141,7 @@ export default function CartSheet() {
                             initial={{ y: "100%" }}
                             animate={{ y: 0 }}
                             exit={{ y: "100%" }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             className="bg-cream w-full md:max-w-md md:rounded-3xl rounded-t-3xl h-[90vh] flex flex-col shadow-2xl overflow-hidden font-sans"
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -146,8 +156,17 @@ export default function CartSheet() {
 
                             <div className="flex-1 overflow-y-auto p-6 space-y-4">
                                 {!showCheckoutForm ? (
-                                    cart.map((item) => (
-                                        <div key={item.id} className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-latte/10">
+                                    <AnimatePresence mode="popLayout">
+                                    {cart.map((item) => (
+                                        <motion.div
+                                            key={item.id}
+                                            layout
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, x: -60, transition: { duration: 0.25 } }}
+                                            transition={{ duration: 0.3 }}
+                                            className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-latte/10"
+                                        >
                                             <div className="flex gap-4 items-center flex-1">
                                                 <img src={item.image} alt={item.name} className="w-16 h-16 rounded-lg object-cover" />
                                                 <div className="flex-1">
@@ -181,28 +200,12 @@ export default function CartSheet() {
                                                     <X size={18} />
                                                 </button>
                                             </div>
-                                        </div>
-                                    ))
+                                        </motion.div>
+                                    ))}
+                                    </AnimatePresence>
                                 ) : (
                                     <form id="checkout-form" onSubmit={handleCheckout} className="space-y-4">
-                                        {/* Order Type Selector */}
-                                        <div className="grid grid-cols-3 gap-2 bg-gray-100 p-1 rounded-xl">
-                                            {(['dine-in', 'takeout', 'delivery'] as const).map((type) => (
-                                                <button
-                                                    key={type}
-                                                    type="button"
-                                                    onClick={() => setOrderType(type)}
-                                                    className={cn(
-                                                        "py-2 rounded-lg text-xs md:text-sm font-bold capitalize transition-all",
-                                                        orderType === type
-                                                            ? "bg-white text-espresso shadow-sm"
-                                                            : "text-gray-500 hover:text-espresso"
-                                                    )}
-                                                >
-                                                    {type.replace("-", " ")}
-                                                </button>
-                                            ))}
-                                        </div>
+                                        {/* Order Type Selector moved to footer view */}
 
                                         <div>
                                             <label className="block text-sm font-bold text-espresso mb-1">Name</label>
@@ -229,14 +232,25 @@ export default function CartSheet() {
 
                                         {orderType === 'dine-in' && (
                                             <div className="animate-in fade-in slide-in-from-top-1">
-                                                <label className="block text-sm font-bold text-espresso mb-1">Table No</label>
+                                                <label className="block text-sm font-bold text-espresso mb-1">
+                                                    Table No
+                                                    {isTableLocked && (
+                                                        <span className="ml-2 text-xs font-normal text-sage bg-sage/10 px-2 py-0.5 rounded-full">
+                                                            📱 Scanned via QR
+                                                        </span>
+                                                    )}
+                                                </label>
                                                 <input
                                                     required
                                                     type="text"
                                                     placeholder="05"
-                                                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none bg-gray-50"
+                                                    readOnly={isTableLocked}
+                                                    className={cn(
+                                                        "w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espresso focus:border-transparent outline-none",
+                                                        isTableLocked ? "bg-sage/5 text-espresso font-bold cursor-not-allowed" : "bg-gray-50"
+                                                    )}
                                                     value={formData.tableNumber}
-                                                    onChange={e => setFormData({ ...formData, tableNumber: e.target.value })}
+                                                    onChange={e => !isTableLocked && setFormData({ ...formData, tableNumber: e.target.value })}
                                                 />
                                             </div>
                                         )}
@@ -284,6 +298,23 @@ export default function CartSheet() {
                                     </>
                                 ) : (
                                     <div className="flex flex-col gap-3">
+                                        <div className="grid grid-cols-3 gap-2 bg-gray-100 p-1 rounded-xl w-full">
+                                            {(['dine-in', 'takeout', 'delivery'] as const).map((type) => (
+                                                <button
+                                                    key={type}
+                                                    type="button"
+                                                    onClick={() => setOrderType(type)}
+                                                    className={cn(
+                                                        "py-2 rounded-lg text-sm font-bold capitalize transition-all",
+                                                        orderType === type
+                                                            ? "bg-white text-espresso shadow-sm"
+                                                            : "text-gray-500 hover:text-espresso"
+                                                    )}
+                                                >
+                                                    {type.replace("-", " ")}
+                                                </button>
+                                            ))}
+                                        </div>
                                         {error && (
                                             <div className="bg-red-50 text-red-600 text-sm font-bold p-3 rounded-xl text-center border border-red-100 animate-in fade-in slide-in-from-top-2">
                                                 {error}

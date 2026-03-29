@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { motion } from "framer-motion";
 import HeroSection from "@/components/home/HeroSection";
 import LoyaltyBanner from "@/components/home/LoyaltyBanner";
 import InfoSection from "@/components/home/InfoSection";
 import MenuCard from "@/components/ui/MenuCard";
 import CartSheet from "@/components/cart/CartSheet";
 import StoreStatusBanner from "@/components/ui/StoreStatusBanner";
+import TableQRListener from "@/components/cart/TableQRListener";
 import menuData from "@/lib/data/menu.json";
 import { getMenuItems } from "@/app/actions/menu";
-import { useEffect } from "react";
 
 // Typed Menu Item
 type MenuItem = {
@@ -67,6 +68,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen pb-32 md:pb-0">
+      <Suspense fallback={null}><TableQRListener /></Suspense>
       <StoreStatusBanner />
       <HeroSection />
 

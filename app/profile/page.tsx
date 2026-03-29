@@ -2,15 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { getCustomerSession } from "@/lib/auth";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabase/client";
 import { User, Clock, ShoppingBag, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { logoutCustomer } from "@/lib/auth";
-
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { motion } from "framer-motion";
 
 export default function ProfilePage() {
     const [customer, setCustomer] = useState<any>(null);
@@ -120,7 +116,12 @@ export default function ProfilePage() {
 
             <div className="max-w-4xl mx-auto px-6 -mt-12 space-y-8">
                 {/* Stats */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-6 border border-latte/10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="bg-white rounded-2xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-6 border border-latte/10"
+                >
                     <div className="flex items-center gap-4">
                         <div className="bg-latte/20 p-4 rounded-full text-espresso">
                             <User size={24} />
@@ -149,14 +150,20 @@ export default function ProfilePage() {
                             <p className="font-bold text-2xl text-espresso">{customer?.visit_count}</p>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Order History */}
                 <div>
                     <h2 className="text-xl font-bold text-espresso mb-4 font-heading">Order History</h2>
                     <div className="space-y-4">
-                        {orders.map((order) => (
-                            <div key={order.id} className="bg-white p-5 rounded-xl shadow-sm border border-latte/10 flex flex-col md:flex-row justify-between md:items-center gap-4">
+                        {orders.map((order, i) => (
+                            <motion.div
+                                key={order.id}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.35, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                                className="bg-white p-5 rounded-xl shadow-sm border border-latte/10 flex flex-col md:flex-row justify-between md:items-center gap-4"
+                            >
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase ${order.status === 'completed' ? 'bg-sage/10 text-sage' :
@@ -179,7 +186,7 @@ export default function ProfilePage() {
                                         View Receipt
                                     </button>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>

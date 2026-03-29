@@ -3,7 +3,11 @@
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 
-const secretKey = "secret-key-change-me-in-production"; // In real app, stick this in env
+// PRODUCTION TODO: Set JWT_SECRET in your environment variables (Vercel dashboard).
+// For a full production app, migrate to Supabase Auth instead of custom JWTs.
+// Migration steps: 1) Enable Supabase Auth, 2) Migrate customers table to auth.users,
+// 3) Replace encrypt/decrypt with Supabase session tokens, 4) Update RLS to use auth.uid().
+const secretKey = process.env.JWT_SECRET || "secret-key-change-me-in-production";
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: any) {
@@ -31,16 +35,24 @@ export async function loginAdmin(formData: FormData) {
     const username = formData.get("username");
     const password = formData.get("password");
 
-    // Simple hardcoded check for MVP as requested
-    if (username === "admin" && password === "admin123") { // Replace with env in prod
+    // PRODUCTION TODO: Move credentials to env vars (ADMIN_USER, ADMIN_PASS)
+    const adminUser = process.env.ADMIN_USER || "admin";
+    const adminPass = process.env.ADMIN_PASS || "admin123";
+
+    if (username === adminUser && password === adminPass) {
         const user = { username: "admin", role: "admin" };
 
         // Create the session
         const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
         const session = await encrypt({ user, expires });
 
-        // Save the session in a cookie
-        cookies().set("admin_session", session, { expires, httpOnly: true });
+        // Save the session in a cookie with security flags
+        cookies().set("admin_session", session, {
+            expires,
+            httpOnly: true,
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+        });
         return { success: true };
     }
 
@@ -48,7 +60,7 @@ export async function loginAdmin(formData: FormData) {
 }
 
 export async function logoutAdmin() {
-    cookies().set("admin_session", "", { expires: new Date(0) });
+    cookies().set("admin_session", "", { expires: new Date(0), httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" });
 }
 
 export async function getAdminSession() {
@@ -107,7 +119,7 @@ export async function registerCustomer(formData: FormData) {
             expires
         });
 
-        cookies().set("customer_session", session, { expires, httpOnly: true });
+        cookies().set("customer_session", session, { expires, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" });
 
         return { success: true };
 
@@ -173,7 +185,7 @@ export async function loginCustomer(formData: FormData) {
             expires
         });
 
-        cookies().set("customer_session", session, { expires, httpOnly: true });
+        cookies().set("customer_session", session, { expires, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" });
 
         if (password === "1234") {
             return { success: true, redirect: "/profile" };
@@ -194,7 +206,7 @@ export async function getCustomerSession() {
 }
 
 export async function logoutCustomer() {
-    cookies().set("customer_session", "", { expires: new Date(0) });
+    cookies().set("customer_session", "", { expires: new Date(0), httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" });
 }
 
 export async function updateCustomerPassword(newPassword: string) {
@@ -218,7 +230,7 @@ export async function updateCustomerPassword(newPassword: string) {
             requiresPasswordChange: false,
             expires
         });
-        cookies().set("customer_session", newSession, { expires, httpOnly: true });
+        cookies().set("customer_session", newSession, { expires, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" });
 
         return { success: true };
     } catch (error: any) {

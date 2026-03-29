@@ -10,9 +10,10 @@ export default function LoyaltyBanner() {
 
             <div className="container mx-auto px-4 relative z-10 flex items-center justify-center text-center">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     className="bg-cream/10 backdrop-blur-md border border-cream/10 rounded-2xl p-6 md:p-8 max-w-4xl shadow-xl"
                 >
                     <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">

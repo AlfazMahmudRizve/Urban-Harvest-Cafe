@@ -17,8 +17,8 @@ export default function HeroSection() {
             <motion.div
                 className="absolute inset-0 z-0"
                 initial={{ scale: 1 }}
-                animate={{ scale: 1.1 }}
-                transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
+                animate={{ scale: 1.06 }}
+                transition={{ duration: 30, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
             >
                 <div className="absolute inset-0 bg-gradient-to-t from-espresso via-espresso/60 to-black/20 z-10" />
                 <img
@@ -50,7 +50,7 @@ export default function HeroSection() {
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
                     className="font-heading font-bold text-5xl md:text-7xl text-cream mb-4 drop-shadow-xl"
                 >
                     Artisan. <span className="italic">Fresh.</span> <br />
@@ -61,7 +61,7 @@ export default function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5, type: "spring" }}
+                    transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 20 }}
                     className="absolute -top-12 -right-4 md:-right-12 bg-cream/90 backdrop-blur-md border border-latte/50 p-4 rounded-2xl shadow-xl rotate-6 animate-float hidden md:block" // Hidden on small screens to avoid overflow
                 >
                     <div className="text-center">
@@ -72,8 +72,8 @@ export default function HeroSection() {
                 </motion.div>
 
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => {
                         const menuSection = document.getElementById("menu-start");
                         if (menuSection) {

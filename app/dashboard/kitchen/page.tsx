@@ -29,9 +29,21 @@ export default function KitchenPage() {
                     <ChefHat className="text-orange-600" size={20} />
                     <h2 className="text-lg font-bold font-heading text-orange-800">Kitchen Command Center</h2>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 shadow-sm text-sm font-bold text-gray-600">
-                    <Clock size={16} />
-                    <span>Avg Prep Time: 12m</span>
+                <div className="flex items-center gap-4">
+                    <button 
+                        onClick={() => {
+                            const testAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+                            testAudio.play().catch(e => console.error("Audio blocked:", e));
+                            alert("If you heard the 'Ting', sound notifications are enabled!");
+                        }}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-50 hover:bg-green-100 transition-colors rounded-xl border border-green-200 shadow-sm text-sm font-bold text-green-700"
+                    >
+                        🔔 Enable/Test Sound
+                    </button>
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 shadow-sm text-sm font-bold text-gray-600">
+                        <Clock size={16} />
+                        <span>Avg Prep Time: 12m</span>
+                    </div>
                 </div>
             </div>
 
@@ -160,15 +172,26 @@ export default function KitchenPage() {
 // Mini Component for the list rows
 function ChannelOrderRow({ order }: { order: any }) {
     return (
-        <div className="flex justify-between items-center p-2 mb-1 rounded hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all">
-            <div className="flex flex-col">
-                <span className="font-bold text-xs text-gray-800">#{order.id.slice(0, 4)}</span>
-                <span className="text-[10px] text-gray-500">{order.customers?.name || 'Guest'}</span>
+        <div className="flex flex-col p-3 mb-2 rounded-xl hover:bg-slate-50 border border-slate-100 transition-all shadow-sm">
+            <div className="flex justify-between items-start mb-2">
+                <div className="flex flex-col gap-0.5 justify-center">
+                    <span className="text-sm font-bold text-slate-800">{order.customers?.name || 'Guest'}</span>
+                </div>
+                <div className={`px-2 py-1 rounded shadow-sm text-[9px] font-bold tracking-wider uppercase ${order.status === 'pending' ? 'bg-red-50 text-red-600 border border-red-100' :
+                    order.status === 'cooking' ? 'bg-yellow-50 text-yellow-700 border border-yellow-100' : 'bg-green-50 text-green-700 border border-green-100'
+                    }`}>
+                    {order.status}
+                </div>
             </div>
-            <div className={`px-2 py-1 rounded text-[10px] font-bold uppercase ${order.status === 'pending' ? 'bg-red-100 text-red-600' :
-                    order.status === 'cooking' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-500'
-                }`}>
-                {order.status}
+
+            {/* Display Order Items */}
+            <div className="flex flex-col gap-1 border-t border-slate-100 pt-2 mt-1">
+                {order.items && order.items.map((item: any, i: number) => (
+                    <div key={i} className="flex items-start text-[11px] leading-tight">
+                        <span className="text-slate-400 font-bold w-4">{item.quantity}x</span>
+                        <span className="text-slate-700 font-medium flex-1 pl-1">{item.name}</span>
+                    </div>
+                ))}
             </div>
         </div>
     );

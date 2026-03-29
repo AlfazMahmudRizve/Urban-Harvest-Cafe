@@ -57,7 +57,12 @@ export default function CustomerLogin() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-cream p-4">
-            <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm border border-latte/20 transition-all font-sans">
+            <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm border border-latte/20 transition-all font-sans"
+            >
                 <div className="text-center mb-6">
                     <h1 className="font-heading font-bold text-3xl text-espresso">
                         {isLogin ? "Welcome Back! ☕" : "Join the Family 🥐"}
@@ -158,7 +163,7 @@ export default function CustomerLogin() {
                 <p className="text-center text-xs text-gray-400 mt-6">
                     By continuing, you agree to our Terms & Privacy Policy.
                 </p>
-            </div>
+            </motion.div>
         </div>
     );
 }
