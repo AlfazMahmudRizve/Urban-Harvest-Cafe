@@ -1,20 +1,27 @@
 # Urban Harvest Cafe ☕🥯
 <br />
 
-> **Fresh. Artisan. Served with Love.**
+> **The Ultimate Solo-Operator Kitchen System**
 
 ![Banner](https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop)
 
-Urban Harvest Cafe is a modern, artisan food ordering application built for warmth and cravings. It features a seamless serving tray system, real-time kitchen logic, and a "fresh-first" design philosophy.
+Urban Harvest Cafe is more than just a food ordering app; it is a purpose-built **independent restaurant system** designed from the ground up to empower a single solo-operator (chef/owner). 
 
-## 🚀 Features
+The philosophy is simple: **One person cooks, the system handles the rest.** 
 
--   **⚡ "Steaming" Hero Section**: Immersive visuals with 3D-like zoom effects.
--   **🛒 Gamified Cart**: Unlock discounts by adding more items (Student Discount logic).
--   **🕒 Smart Business Hours**: Prevents ordering when the store is closed.
--   **📱 Responsive & Sticky**: Optimized for mobile with sticky navigation and cart bars.
--   **🔥 Loyalty System**: "Loyalty tastes better" banner with unique positioning.
--   **🛠️ Tech Stack**: Next.js 14, Tailwind CSS, Framer Motion, Zustand.
+## 💡 The Vision: Solo Cafe Operations
+Running a small, independent cafe shouldn't require a 5-person front-of-house staff. This system is built around a friction-free workflow:
+1. Customers sit at a table, scan a QR code, and order from their phones (defaulting to Dine-In). Takeout and Home Delivery options are also seamlessly integrated.
+2. The kitchen runs **completely hands-free**. When an order comes in, the dashboard's built-in Text-to-Speech engine literally speaks the order aloud to the chef so they never have to wipe flour off their hands to tap a screen. 
+3. When the food is hot and ready, the chef hits "Completed" and simply shouts the customer's name and table number (e.g., *"John, your food is ready at Table 4!"*).
+
+## 🚀 Key Features
+
+-   **🗣️ Hands-Free Kitchen Notification:** Browser-native Text-to-Speech reads out the customer name, table number, and exact items requested (e.g., *"New order for Rizve, Table 4. 1x Avocado Sourdough Toast"*).
+-   **🛡️ Dynamic Overload Protection:** A custom load-balancing engine. The chef defines their max capacity and limits in the settings dashboard. If the kitchen gets swamped, the storefront automatically displays an "Overwhelmed" pause screen to prevent angry customers and impossible wait times.
+-   **⏱️ Real-Time Smart ETA:** The `/success` page actively calculates the customer's estimated wait time based on how many tickets the kitchen is currently processing, avoiding generic "Wait 20 minutes" placeholders.
+-   **📱 Mobile-First Scanning:** Designed specifically round QR-code table scanning. The UI is heavily optimized for fast mobile scrolling, sticky cart interactions, and instant checkout.
+-   **📈 Kanban Command Center:** The chef's dashboard uses an intuitive Drag/Action Kanban board (Pending -> Cooking -> Ready), alongside a Channel Breakdown to quickly view itemized lists by Dine-In, Takeout, or Delivery.
 
 ## 🛠️ Getting Started
 
@@ -38,4 +45,4 @@ Designed & Developed by **[Alfaz Mahmud Rizve](https://whoisalfaz.me)**.
 [View Source on GitHub](https://github.com/AlfazMahmudRizve/Urban-Harvest-Cafe)
 
 ---
-*Built with ❤️ for foodies.*
+*Built with ❤️ for solo independent cafe operators.*

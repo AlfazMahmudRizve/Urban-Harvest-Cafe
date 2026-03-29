@@ -29,7 +29,10 @@ export type Customer = {
     visit_count: number;
 };
 
-const POLL_INTERVAL = 5000; // Poll every 5 seconds as fallback
+const POLL_INTERVAL = 15000; // 15 seconds fallback polling
+
+// Module-level set to prevent TTS duplication when hook is used by multiple components
+const globalSpokenOrders = new Set<string>();
 
 export function useDashboardData() {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -84,6 +87,17 @@ export function useDashboardData() {
                 
                 if (typeof window !== "undefined" && "speechSynthesis" in window) {
                     newOrdersList.forEach((order: any) => {
+                        // Prevent duplicate TTS if multiple components use this hook
+                        if (globalSpokenOrders.has(order.id)) return;
+                        globalSpokenOrders.add(order.id);
+                        
+                        // Keep memory light
+                        if (globalSpokenOrders.size > 100) {
+                            const iterator = globalSpokenOrders.values();
+                            const val = iterator.next().value;
+                            if (val) globalSpokenOrders.delete(val); // Remove oldest
+                        }
+
                         const customerName = order.customers?.name || "Customer";
                         const locationDesc = order.order_type === 'dine-in' 
                             ? `Table ${order.table_number || "unknown"}` 
@@ -92,9 +106,6 @@ export function useDashboardData() {
                         const itemsDesc = order.items.map((i: any) => `${i.quantity} ${i.name}`).join(", ");
                         
                         const announcement = `New order for ${customerName}, ${locationDesc}. ${itemsDesc}.`;
-                        
-                        // Prevent overlap or spam by cancelling current speech if needed
-                        // window.speechSynthesis.cancel();
                         
                         const utterance = new SpeechSynthesisUtterance(announcement);
                         utterance.rate = 0.9; // Slightly slower for readability
