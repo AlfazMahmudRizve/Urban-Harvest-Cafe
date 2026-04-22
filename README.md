@@ -5,6 +5,10 @@
 
 ![Banner](https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop)
 
+### 🎥 See It In Action (Real-Time Kitchen Sync)
+*(Embed your split-screen Loom/YouTube VSL demonstrating the text-to-speech audio working in real-time here)*
+[![Urban Harvest Cafe Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID "Urban Harvest Cafe Real-time Demo")
+
 Urban Harvest Cafe is more than just a food ordering app; it is a purpose-built **independent restaurant system** designed from the ground up to empower a single solo-operator (chef/owner). 
 
 The philosophy is simple: **One person cooks, the system handles the rest.** 
@@ -22,6 +26,20 @@ Running a small, independent cafe shouldn't require a 5-person front-of-house st
 -   **⏱️ Real-Time Smart ETA:** The `/success` page actively calculates the customer's estimated wait time based on how many tickets the kitchen is currently processing, avoiding generic "Wait 20 minutes" placeholders.
 -   **📱 Mobile-First Scanning:** Designed specifically round QR-code table scanning. The UI is heavily optimized for fast mobile scrolling, sticky cart interactions, and instant checkout.
 -   **📈 Kanban Command Center:** The chef's dashboard uses an intuitive Drag/Action Kanban board (Pending -> Cooking -> Ready), alongside a Channel Breakdown to quickly view itemized lists by Dine-In, Takeout, or Delivery.
+-   **📱 Installable PWA:** Configured as a Progressive Web Application. Customers can install the cafe app directly to their iOS/Android home screens without an App Store, increasing retention and re-orders.
+
+## 🏗️ Architecture & Data Flow
+*(For Technical Evaluators & Buyers)*
+
+This application is built for high-performance and reliable state synchronization across devices:
+- **Framework:** Next.js 14 (App Router) combined with TailwindCSS for the presentation layer.
+- **State Management:** Zustand is used for client-side cart management and local persistence, ensuring that users don't lose their cart if they accidentally refresh or lose connection.
+- **Backend Edge Network:** Supabase provides the PostgreSQL database and authenticates Admin/Kitchen operations.
+- **Real-Time Data Sync:** 
+  - The kitchen dashboard utilizes **Supabase Realtime subscriptions** to instantly push new incoming order payloads directly to the client browser.
+  - To bypass strict browser constraints (e.g., extensions blocking WebSockets or React StrictMode teardowns), an automatic, resilient **5-second polling fallback layer** was custom-engineered to guarantee 100% order capture even on unstable cafe WiFi networks.
+- **Data Security:** Row Level Security (RLS) policies are configured in Postgres. Customer connections use a public `anon` key to write new orders, while the Kitchen Dashboard is protected behind a cryptographic session layer.
+- **Offline Reliability:** Service workers cache core static assets ensuring the storefront UI loads instantly for repeat customers on spotty mobile data.
 
 ## 🛠️ Getting Started
 

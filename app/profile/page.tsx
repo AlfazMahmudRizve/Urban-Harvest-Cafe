@@ -89,7 +89,7 @@ export default function ProfilePage() {
         setUpdatingPassword(false);
     }
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center font-sans">Loading Profile...</div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center font-sans"><h1 className="sr-only">My Profile</h1>Loading Profile...</div>;
 
     return (
         <div className="min-h-screen bg-cream pb-20 font-sans">
