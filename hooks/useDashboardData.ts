@@ -48,23 +48,29 @@ export function useDashboardData() {
     const lastOrderCountRef = useRef<number>(0);
     const isFirstLoadRef = useRef(true);
 
-    // Initialize speech synthesis and prime it on first user interaction
-    useEffect(() => {
-        if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-        
-        // Browser blocks audio/speech unless triggered by user gesture.
-        // Prime the speech engine on first click.
-        const primeSpeech = () => {
+    const [isShiftActive, setIsShiftActive] = useState(false);
+    const [missedAudioQueue, setMissedAudioQueue] = useState<string[]>([]);
+
+    // Phase 3: The Silent Audio Activation
+    const startShift = useCallback(() => {
+        if (typeof window !== "undefined" && "speechSynthesis" in window) {
             const utterance = new SpeechSynthesisUtterance("");
             utterance.volume = 0;
             window.speechSynthesis.speak(utterance);
-            console.log("🔊 TTS primed — dashboard will speak new orders");
-            document.removeEventListener("click", primeSpeech);
-        };
-        document.addEventListener("click", primeSpeech);
-
-        return () => document.removeEventListener("click", primeSpeech);
+        }
+        setIsShiftActive(true);
     }, []);
+
+    const playMissedAudio = useCallback(() => {
+        if (typeof window !== "undefined" && "speechSynthesis" in window) {
+            missedAudioQueue.forEach(announcement => {
+                const utterance = new SpeechSynthesisUtterance(announcement);
+                window.speechSynthesis.speak(utterance);
+            });
+            setMissedAudioQueue([]);
+        }
+    }, [missedAudioQueue]);
+
 
     // Fetch all data
     const fetchOrders = useCallback(async () => {
@@ -110,6 +116,13 @@ export function useDashboardData() {
                         const utterance = new SpeechSynthesisUtterance(announcement);
                         utterance.rate = 0.9; // Slightly slower for readability
                         utterance.pitch = 1.0; 
+                        
+                        // Phase 5: The Failsafe Queue
+                        utterance.onerror = (event) => {
+                            console.error("TTS Error:", event);
+                            setMissedAudioQueue(prev => [...prev, announcement]);
+                        };
+                        
                         window.speechSynthesis.speak(utterance);
                     });
                 }
@@ -123,6 +136,9 @@ export function useDashboardData() {
 
     // Initial fetch + polling
     useEffect(() => {
+        // Phase 4: State Release & Listener Initialization
+        // Do not fetch data or open WebSockets until the shift is explicitly started
+        if (!isShiftActive) return;
         // Fetch store status
         const fetchStatus = async () => {
             const { getStoreStatus } = await import("@/app/actions/storeStatus");
@@ -170,7 +186,7 @@ export function useDashboardData() {
             clearInterval(pollInterval);
             supabase.removeChannel(channel);
         };
-    }, [fetchOrders]);
+    }, [fetchOrders, isShiftActive]);
 
     const handleStatusUpdate = async (id: string, status: string) => {
         // Optimistic update
@@ -194,6 +210,10 @@ export function useDashboardData() {
         orders,
         customers,
         storeStatus,
+        isShiftActive,
+        missedAudioQueue,
+        startShift,
+        playMissedAudio,
         handleStatusUpdate,
         handleToggleStore
     };

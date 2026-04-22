@@ -4,10 +4,37 @@ import { useDashboardData } from "@/hooks/useDashboardData";
 import { Column } from "@/components/dashboard/SharedComponents";
 import OrderCard from "@/components/dashboard/OrderCard";
 import { MetricCard } from "@/components/dashboard/SharedComponents";
-import { ChefHat, Flame, Utensils, ShoppingBag, Truck, Clock, AlertCircle, CheckCircle } from "lucide-react";
+import { ChefHat, Flame, Utensils, ShoppingBag, Truck, Clock, AlertCircle, CheckCircle, Play, VolumeX } from "lucide-react";
 
 export default function KitchenPage() {
-    const { orders, handleStatusUpdate } = useDashboardData();
+    const { 
+        orders, 
+        isShiftActive, 
+        missedAudioQueue, 
+        startShift, 
+        playMissedAudio, 
+        handleStatusUpdate 
+    } = useDashboardData();
+
+    // PHASE 1 & 2: The Interstitial State Lock & Mandatory Interaction Trigger
+    if (!isShiftActive) {
+        return (
+            <div className="fixed inset-0 z-[9999] bg-espresso/95 backdrop-blur-sm flex flex-col items-center justify-center text-cream">
+                <ChefHat size={64} className="text-orange-500 mb-6 animate-bounce" />
+                <h1 className="font-heading text-4xl font-bold mb-4 text-center">Kitchen Dashboard</h1>
+                <p className="text-gray-300 text-center max-w-md mb-8">
+                    To ensure the browser allows audio announcements for new incoming orders, you must physically click the button below to begin your shift.
+                </p>
+                <button
+                    onClick={startShift}
+                    className="flex items-center gap-3 px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-2xl font-bold text-xl transition-all shadow-[0_0_40px_rgba(234,88,12,0.4)] hover:shadow-[0_0_60px_rgba(234,88,12,0.6)] hover:scale-105"
+                >
+                    <Play fill="currentColor" />
+                    Start Shift (Enable Audio)
+                </button>
+            </div>
+        );
+    }
 
     // 1. MAIN KANBAN LOGIC (Status-based)
     const pendingOrders = orders.filter(o => o.status === "pending");
@@ -23,6 +50,25 @@ export default function KitchenPage() {
 
     return (
         <div className="space-y-8 animate-in fade-in zoom-in duration-300 pb-20">
+            {/* PHASE 5: The Failsafe Queue Visual Override */}
+            {missedAudioQueue.length > 0 && (
+                <div 
+                    onClick={playMissedAudio}
+                    className="w-full bg-red-600 hover:bg-red-700 cursor-pointer text-white p-4 rounded-xl shadow-lg border-2 border-red-400 flex items-center justify-between animate-pulse transition-colors"
+                >
+                    <div className="flex items-center gap-3">
+                        <VolumeX size={24} className="animate-bounce" />
+                        <div>
+                            <h3 className="font-bold font-heading text-lg">Audio Disconnected!</h3>
+                            <p className="text-sm text-red-100">The browser blocked {missedAudioQueue.length} order announcement(s).</p>
+                        </div>
+                    </div>
+                    <span className="font-bold bg-white text-red-600 px-4 py-2 rounded-lg text-sm shadow-sm">
+                        Click here to play missed audio
+                    </span>
+                </div>
+            )}
+
             {/* Header Metrics */}
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
                 <div className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg w-fit">

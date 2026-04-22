@@ -37,6 +37,9 @@ This application is built for high-performance and reliable state synchronizatio
 - **Real-Time Data Sync:** 
   - The kitchen dashboard utilizes **Supabase Realtime subscriptions** to instantly push new incoming order payloads directly to the client browser.
   - To bypass strict browser constraints (e.g., extensions blocking WebSockets or React StrictMode teardowns), an automatic, resilient **5-second polling fallback layer** was custom-engineered to guarantee 100% order capture even on unstable cafe WiFi networks.
+- **Audio Autoplay Bypass & Failsafe Queue:**
+  - Modern browsers aggressively block Text-to-Speech (TTS) autoplay. The kitchen dashboard implements an **Interstitial State Lock** (requiring a physical "Start Shift" interaction) to securely prime the Web Speech API before any WebSocket connections are opened.
+  - A built-in **Failsafe Queue** catches any OS-level audio suspensions (e.g., tab backgrounding) and queues the missed audio payloads behind a high-contrast visual alert to ensure zero dropped orders.
 - **Data Security:** Row Level Security (RLS) policies are configured in Postgres. Customer connections use a public `anon` key to write new orders, while the Kitchen Dashboard is protected behind a cryptographic session layer.
 - **Offline Reliability:** Service workers cache core static assets ensuring the storefront UI loads instantly for repeat customers on spotty mobile data.
 
