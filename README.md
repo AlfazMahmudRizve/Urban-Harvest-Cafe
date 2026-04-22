@@ -6,8 +6,7 @@
 ![Banner](https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop)
 
 ### 🎥 See It In Action (Real-Time Kitchen Sync)
-*(Embed your split-screen Loom/YouTube VSL demonstrating the text-to-speech audio working in real-time here)*
-[![Urban Harvest Cafe Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID "Urban Harvest Cafe Real-time Demo")
+(coming soon)
 
 Urban Harvest Cafe is more than just a food ordering app; it is a purpose-built **independent restaurant system** designed from the ground up to empower a single solo-operator (chef/owner). 
 
