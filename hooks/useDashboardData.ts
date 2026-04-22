@@ -48,7 +48,12 @@ export function useDashboardData() {
     const lastOrderCountRef = useRef<number>(0);
     const isFirstLoadRef = useRef(true);
 
-    const [isShiftActive, setIsShiftActive] = useState(false);
+    const [isShiftActive, setIsShiftActive] = useState(() => {
+        if (typeof window !== "undefined") {
+            return sessionStorage.getItem("urban_shift_active") === "true";
+        }
+        return false;
+    });
     const [missedAudioQueue, setMissedAudioQueue] = useState<string[]>([]);
 
     // Phase 3: The Silent Audio Activation
@@ -57,6 +62,7 @@ export function useDashboardData() {
             const utterance = new SpeechSynthesisUtterance("");
             utterance.volume = 0;
             window.speechSynthesis.speak(utterance);
+            sessionStorage.setItem("urban_shift_active", "true");
         }
         setIsShiftActive(true);
     }, []);
