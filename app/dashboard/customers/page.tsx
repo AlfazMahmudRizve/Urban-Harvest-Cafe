@@ -4,7 +4,7 @@ import { useDashboardData } from "@/hooks/useDashboardData";
 import { Users, UserPlus } from "lucide-react";
 
 export default function CustomersPage() {
-    const { customers } = useDashboardData();
+    const { customers } = useDashboardData({ skipOrders: true, skipRealtime: true });
 
     // Customer Ranking Logic
     const sortedCustomers = [...customers].sort((a, b) => b.total_spend - a.total_spend);

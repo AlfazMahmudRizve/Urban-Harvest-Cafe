@@ -15,6 +15,7 @@ const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 import { cookies } from "next/headers";
 import { encrypt } from "@/lib/auth";
+import bcrypt from "bcryptjs";
 
 // Validation Schema
 const OrderSchema = z.object({
@@ -87,7 +88,7 @@ export async function placeOrder(prevState: any, formData: any) {
             customerId = existingCustomer.id;
         } else {
             // Insert new
-            const hashedPassword = await require("bcryptjs").hash("1234", 10);
+            const hashedPassword = await bcrypt.hash("1234", 10);
 
             const { data: newCustomer, error: insertError } = await supabase
                 .from("customers")

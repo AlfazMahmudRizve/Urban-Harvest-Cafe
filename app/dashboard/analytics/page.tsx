@@ -6,7 +6,7 @@ import { RevenueChart, CategoryPieChart } from "@/components/dashboard/Analytics
 import { TrendingUp, DollarSign, Utensils } from "lucide-react";
 
 export default function AnalyticsPage() {
-    const { orders } = useDashboardData();
+    const { orders } = useDashboardData({ skipCustomers: true, skipRealtime: true });
 
     // Metrics Logic
     const today = new Date().toISOString().split('T')[0];

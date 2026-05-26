@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getCustomerSession } from "@/lib/auth";
-import { supabase } from "@/lib/supabase/client";
+import { getSecureCustomerProfile, getSecureCustomerOrders } from "@/app/actions/customerData";
 import { User, Clock, ShoppingBag, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { logoutCustomer } from "@/lib/auth";
@@ -30,23 +30,18 @@ export default function ProfilePage() {
                 setShowPasswordReset(true);
             }
 
-            // Fetch fresh customer data
-            const { data: customerData } = await supabase
-                .from("customers")
-                .select("*")
-                .eq("id", session.id)
-                .single();
+            // Fetch secure profile on the server side
+            const profileRes = await getSecureCustomerProfile();
+            if (profileRes.success && profileRes.data) {
+                setCustomer(profileRes.data);
+            }
 
-            setCustomer(customerData);
+            // Fetch secure orders on the server side
+            const ordersRes = await getSecureCustomerOrders();
+            if (ordersRes.success && ordersRes.data) {
+                setOrders(ordersRes.data);
+            }
 
-            // Fetch orders
-            const { data: ordersData } = await supabase
-                .from("orders")
-                .select("*")
-                .eq("customer_id", session.id)
-                .order("created_at", { ascending: false });
-
-            if (ordersData) setOrders(ordersData);
             setLoading(false);
         }
         loadData();

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { Column } from "@/components/dashboard/SharedComponents";
 import OrderCard from "@/components/dashboard/OrderCard";
@@ -10,11 +11,28 @@ export default function KitchenPage() {
     const { 
         orders, 
         isShiftActive, 
+        realtimeStatus,
         missedAudioQueue, 
         startShift, 
         playMissedAudio, 
         handleStatusUpdate 
-    } = useDashboardData();
+    } = useDashboardData({ skipCustomers: true });
+
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Prevent hydration mismatch by returning a clean, server-matching blank loader until client mounted
+    if (!mounted) {
+        return (
+            <div className="min-h-screen bg-espresso flex flex-col items-center justify-center text-cream font-sans">
+                <ChefHat size={48} className="text-orange-500 mb-4 animate-pulse" />
+                <p className="text-gray-300 font-medium">Loading Kitchen Dashboard...</p>
+            </div>
+        );
+    }
 
     // PHASE 1 & 2: The Interstitial State Lock & Mandatory Interaction Trigger
     if (!isShiftActive) {
@@ -75,7 +93,28 @@ export default function KitchenPage() {
                     <ChefHat className="text-orange-600" size={20} />
                     <h2 className="text-lg font-bold font-heading text-orange-800">Kitchen Command Center</h2>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-4">
+                    {/* Live Sync Status Telemetry */}
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 shadow-sm text-sm font-bold animate-in fade-in duration-300">
+                        <span className="text-gray-400 font-medium">Sync:</span>
+                        <div className="flex items-center gap-2">
+                            <span className={`w-2.5 h-2.5 rounded-full inline-block ${
+                                realtimeStatus === 'SUBSCRIBED' ? 'bg-emerald-500 animate-pulse' :
+                                realtimeStatus === 'CONNECTING' ? 'bg-amber-500 animate-bounce' :
+                                'bg-indigo-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.5)]'
+                            }`} />
+                            <span className={`tracking-wider text-xs ${
+                                realtimeStatus === 'SUBSCRIBED' ? 'text-emerald-700' :
+                                realtimeStatus === 'CONNECTING' ? 'text-amber-700' :
+                                'text-indigo-700'
+                            }`}>
+                                {realtimeStatus === 'SUBSCRIBED' ? 'LIVE SYNC' :
+                                 realtimeStatus === 'CONNECTING' ? 'CONNECTING...' :
+                                 'SECURE SYNC'}
+                            </span>
+                        </div>
+                    </div>
+
                     <button 
                         onClick={() => {
                             const testAudio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");

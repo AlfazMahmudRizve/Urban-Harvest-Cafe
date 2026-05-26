@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { getSecureOrderUpdates } from "@/app/actions/customerData";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChefHat, X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,20 +20,15 @@ export default function OrderReadyToast({ customerId }: { customerId?: string })
         }
     }, []);
 
-    // Poll for order status changes
+    // Poll for order status changes securely
     useEffect(() => {
         if (!customerId) return;
 
         const checkForCompletedOrders = async () => {
-            const { data } = await supabase
-                .from("orders")
-                .select("id, status, table_number")
-                .eq("customer_id", customerId)
-                .eq("status", "completed")
-                .order("created_at", { ascending: false })
-                .limit(5);
+            const res = await getSecureOrderUpdates();
+            if (!res.success || !res.data) return;
 
-            if (!data) return;
+            const data = res.data;
 
             // On first load, just record the existing completed orders
             if (isFirstLoadRef.current) {

@@ -7,7 +7,7 @@ import { useDashboardData } from "@/hooks/useDashboardData";
 
 export default function DashboardHeader() {
     const pathname = usePathname();
-    const { storeStatus, handleToggleStore } = useDashboardData();
+    const { storeStatus, handleToggleStore } = useDashboardData({ skipOrders: true, skipCustomers: true, skipRealtime: true });
 
     // Helper to check active state
     const isActive = (path: string) => pathname.includes(path);
