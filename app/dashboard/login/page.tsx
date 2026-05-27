@@ -32,37 +32,37 @@ export default function AdminLogin() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-dash p-4 grain-overlay">
-            <div className="glass-card-dark p-8 rounded-2xl border border-latte/8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-300">
+            <div className="glass-card-dark p-8 rounded-2xl border border-latte/15 w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-300">
                 <div className="text-center mb-8">
-                    <h1 className="font-heading font-extrabold text-3xl text-cream flex items-center justify-center gap-2">Admin Access <span>🔒</span></h1>
-                    <p className="text-latte/50 mt-2">Enter credentials to access the kitchen workspace</p>
+                    <h1 className="font-heading font-extrabold text-3xl text-espresso flex items-center justify-center gap-2">Admin Access <span>🔒</span></h1>
+                    <p className="text-espresso/60 mt-2 font-medium">Enter credentials to access the kitchen workspace</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-bold text-latte/70 mb-2">Username</label>
+                        <label className="block text-sm font-bold text-espresso/70 mb-2">Username</label>
                         <input
                             name="username"
                             type="text"
                             required
-                            className="w-full p-3 bg-dash-bg border border-latte/8 text-cream rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-mono"
+                            className="w-full p-3 bg-white border border-latte/20 text-espresso rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-sans"
                             placeholder="admin"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-latte/70 mb-2">Password</label>
+                        <label className="block text-sm font-bold text-espresso/70 mb-2">Password</label>
                         <input
                             name="password"
                             type="password"
                             required
-                            className="w-full p-3 bg-dash-bg border border-latte/8 text-cream rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-mono"
+                            className="w-full p-3 bg-white border border-latte/20 text-espresso rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-sans"
                             placeholder="••••••••"
                         />
                     </div>
 
                     {error && (
-                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg font-bold text-center">
+                        <div className="bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg font-bold text-center">
                             {error}
                         </div>
                     )}

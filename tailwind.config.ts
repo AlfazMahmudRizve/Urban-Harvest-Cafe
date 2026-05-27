@@ -30,11 +30,11 @@ const config: Config = {
           warm: "#F5F0E8",
         },
 
-        // Dashboard Dark
+        // Dashboard
         dash: {
-          bg: "#1A1412",
-          surface: "#241E1A",
-          "surface-hover": "#2E2622",
+          bg: "var(--dash-bg)",
+          surface: "var(--dash-surface)",
+          "surface-hover": "var(--dash-surface-hover)",
         },
 
         // Legacy Mapping

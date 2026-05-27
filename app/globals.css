@@ -31,20 +31,20 @@
     --shadow-lg: 0 16px 40px -8px rgba(62, 39, 35, 0.12);
     --shadow-xl: 0 24px 56px -12px rgba(62, 39, 35, 0.16);
 
-    /* ─── Dashboard Dark Theme Tokens ─── */
-    --dash-bg: #1A1412;
-    --dash-surface: #241E1A;
-    --dash-surface-hover: #2E2622;
-    --dash-border: rgba(221, 190, 169, 0.08);
-    --dash-border-hover: rgba(221, 190, 169, 0.15);
-    --dash-text: #F5F0E8;
-    --dash-text-muted: rgba(221, 190, 169, 0.5);
+    /* ─── Dashboard Light Theme Tokens ─── */
+    --dash-bg: #F5F0E8;
+    --dash-surface: #FFFFFF;
+    --dash-surface-hover: #FCFAF6;
+    --dash-border: rgba(221, 190, 169, 0.15);
+    --dash-border-hover: rgba(221, 190, 169, 0.30);
+    --dash-text: #3E2723;
+    --dash-text-muted: rgba(62, 39, 35, 0.6);
 
     /* ─── Glass Effect Tokens ─── */
     --glass-bg: rgba(252, 250, 246, 0.7);
     --glass-border: rgba(221, 190, 169, 0.25);
-    --glass-dark-bg: rgba(36, 30, 26, 0.75);
-    --glass-dark-border: rgba(221, 190, 169, 0.1);
+    --glass-dark-bg: rgba(252, 250, 246, 0.85);
+    --glass-dark-border: rgba(221, 190, 169, 0.2);
 
     /* ─── Radius Scale ─── */
     --radius-sm: 8px;

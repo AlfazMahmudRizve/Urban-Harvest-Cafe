@@ -56,29 +56,29 @@ export default function SettingsPage() {
     return (
         <div className="p-4 md:p-6 max-w-2xl animate-in fade-in duration-300">
             <div className="flex items-center gap-3 mb-8">
-                <div className="bg-sage/20 text-sage p-2.5 rounded-xl border border-sage/10 shadow-md">
+                <div className="bg-sage/10 text-sage p-2.5 rounded-xl border border-sage/20 shadow-sm">
                     <Settings2 size={24} />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold font-heading text-cream tracking-tight">System Settings</h1>
-                    <p className="text-sm font-medium text-latte/60">Fine-tune the preparation timings and capacity of the kitchen.</p>
+                    <h1 className="text-2xl font-bold font-heading text-espresso tracking-tight">System Settings</h1>
+                    <p className="text-sm font-medium text-espresso/60">Fine-tune the preparation timings and capacity of the kitchen.</p>
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-dash-surface rounded-2xl border border-latte/8 overflow-hidden relative shadow-lg">
-                <div className="p-6 border-b border-latte/8">
-                    <h2 className="text-sm font-bold tracking-wider text-latte/40 uppercase mb-6 flex items-center gap-2">
+            <form onSubmit={handleSubmit} className="glass-card rounded-2xl border border-latte/15 overflow-hidden relative shadow-md">
+                <div className="p-6 border-b border-latte/15">
+                    <h2 className="text-sm font-bold tracking-wider text-espresso/40 uppercase mb-6 flex items-center gap-2">
                         <AlertCircle size={16} /> Kitchen Capacity Settings
                     </h2>
                     
                     <div className="space-y-6">
                         {/* Max Orders */}
                         <div>
-                            <label className="flex items-center justify-between font-bold text-cream tracking-tight text-sm mb-1">
+                            <label className="flex items-center justify-between font-bold text-espresso tracking-tight text-sm mb-1">
                                 Active Order Threshold
-                                <span className="text-xs font-semibold text-latte/40 bg-dash-bg px-2 py-0.5 rounded-full border border-latte/8">Active Orders</span>
+                                <span className="text-xs font-semibold text-espresso/50 bg-cream-warm px-2 py-0.5 rounded-full border border-latte/15">Active Orders</span>
                             </label>
-                            <p className="text-xs text-latte/50 mb-2 font-medium">
+                            <p className="text-xs text-espresso/50 mb-2 font-medium">
                                 The maximum number of active (pending/preparing) orders before the storefront auto-pauses checkout.
                             </p>
                             <input
@@ -88,17 +88,17 @@ export default function SettingsPage() {
                                 required
                                 value={formData.max_active_orders}
                                 onChange={(e) => setFormData({ ...formData, max_active_orders: parseInt(e.target.value) })}
-                                className="w-full md:w-1/2 bg-dash-bg border border-latte/8 text-cream text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
+                                className="w-full md:w-1/2 bg-white border border-latte/20 text-espresso text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
                             />
                         </div>
 
                         {/* Base Prep */}
                         <div>
-                            <label className="flex items-center justify-between font-bold text-cream tracking-tight text-sm mb-1">
+                            <label className="flex items-center justify-between font-bold text-espresso tracking-tight text-sm mb-1">
                                 Base Preparation Time 
-                                <span className="text-xs font-semibold text-latte/40 bg-dash-bg px-2 py-0.5 rounded-full border border-latte/8">Minutes</span>
+                                <span className="text-xs font-semibold text-espresso/50 bg-cream-warm px-2 py-0.5 rounded-full border border-latte/15">Minutes</span>
                             </label>
-                            <p className="text-xs text-latte/50 mb-2 font-medium">
+                            <p className="text-xs text-espresso/50 mb-2 font-medium">
                                 Minimum guaranteed time an order takes when the kitchen is empty.
                             </p>
                             <input
@@ -107,17 +107,17 @@ export default function SettingsPage() {
                                 required
                                 value={formData.base_prep_time}
                                 onChange={(e) => setFormData({ ...formData, base_prep_time: parseInt(e.target.value) })}
-                                className="w-full md:w-1/2 bg-dash-bg border border-latte/8 text-cream text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
+                                className="w-full md:w-1/2 bg-white border border-latte/20 text-espresso text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
                             />
                         </div>
 
                         {/* Per Order Multiplier */}
                         <div>
-                            <label className="flex items-center justify-between font-bold text-cream tracking-tight text-sm mb-1">
+                            <label className="flex items-center justify-between font-bold text-espresso tracking-tight text-sm mb-1">
                                 Time Penalty Per Active Order
-                                <span className="text-xs font-semibold text-latte/40 bg-dash-bg px-2 py-0.5 rounded-full border border-latte/8">Minutes</span>
+                                <span className="text-xs font-semibold text-espresso/50 bg-cream-warm px-2 py-0.5 rounded-full border border-latte/15">Minutes</span>
                             </label>
-                            <p className="text-xs text-latte/50 mb-2 font-medium">
+                            <p className="text-xs text-espresso/50 mb-2 font-medium">
                                 Calculates dynamic ETA. (e.g. Base Time + (Penalty × Active Orders)).
                             </p>
                             <input
@@ -126,16 +126,16 @@ export default function SettingsPage() {
                                 required
                                 value={formData.prep_time_per_order}
                                 onChange={(e) => setFormData({ ...formData, prep_time_per_order: parseInt(e.target.value) })}
-                                className="w-full md:w-1/2 bg-dash-bg border border-latte/8 text-cream text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
+                                className="w-full md:w-1/2 bg-white border border-latte/20 text-espresso text-sm rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent block p-3 outline-none font-mono transition-shadow duration-200"
                             />
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-dash-surface-hover/30 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-latte/8">
+                <div className="bg-cream-warm/30 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-latte/15">
                     <div className="flex-1">
                         {notification && (
-                            <div className={`text-sm font-bold flex items-center gap-2 ${notification.type === 'success' ? 'text-sage' : 'text-red-400'}`}>
+                            <div className={`text-sm font-bold flex items-center gap-2 ${notification.type === 'success' ? 'text-sage' : 'text-red-600'}`}>
                                 <div className={`w-2 h-2 rounded-full ${notification.type === 'success' ? 'bg-sage animate-pulse' : 'bg-red-500'}`} />
                                 {notification.msg}
                             </div>
