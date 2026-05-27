@@ -38,11 +38,36 @@ export async function POST(request: Request) {
         const textLower = text.toLowerCase();
         const chatId = message.chat.id.toString();
 
-        // 2. Check for deep linking command: /start CUSTOMER_ID
+        // 2. Check for deep linking command: /start PAYLOAD
         if (text.startsWith('/start ') && text.length > 7) {
-            const customerId = text.substring(7).trim(); // Extract CUSTOMER_ID
-            console.log(`Deep link detected: customerId=${customerId}, chatId=${chatId}`);
+            const payload = text.substring(7).trim();
+            console.log(`Deep link payload detected: ${payload}, chatId=${chatId}`);
 
+            // A. Table Lock Deep Link (/start table_N)
+            if (payload.startsWith('table_')) {
+                const tableNumber = payload.substring(6).trim();
+                console.log(`Table lock detected: Table ${tableNumber} for Chat ID ${chatId}`);
+
+                const welcomeText = `☕ *Welcome to Urban Harvest, sitting at Table ${tableNumber}!* 🥐\n\nWe have automatically locked in your table location. Tap "Order Online" below to browse our live menu, customize your items, and checkout directly from your chat!`;
+                
+                const replyMarkup = {
+                    inline_keyboard: [
+                        [
+                            { text: `🌐 Order Online (Table ${tableNumber})`, web_app: { url: `https://urbancafe.whoisalfaz.me/?table=${tableNumber}` } }
+                        ],
+                        [
+                            { text: '📖 Open in Browser', url: `https://urbancafe.whoisalfaz.me/?table=${tableNumber}` }
+                        ]
+                    ]
+                };
+
+                await sendTelegramMessage(chatId, welcomeText, replyMarkup);
+                return NextResponse.json({ success: true });
+            }
+
+            // B. Order Notification Link (/start CUSTOMER_ID)
+            const customerId = payload;
+            
             // Update customer record in Supabase
             const { data: customer, error: customerError } = await supabaseAdmin
                 .from('customers')
