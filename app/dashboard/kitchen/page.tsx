@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { Column } from "@/components/dashboard/SharedComponents";
 import OrderCard from "@/components/dashboard/OrderCard";
-import { ChefHat, Flame, Utensils, ShoppingBag, Truck, Clock, AlertCircle, CheckCircle, Play, VolumeX, Layers, Activity } from "lucide-react";
+import { ChefHat, Flame, Utensils, ShoppingBag, Truck, Clock, AlertCircle, CheckCircle, Play, VolumeX, Activity } from "lucide-react";
 
 export default function KitchenPage() {
     const { 
@@ -58,7 +58,7 @@ export default function KitchenPage() {
     const pendingOrders = orders.filter(o => o.status === "pending");
     const cookingOrders = orders.filter(o => o.status === "cooking");
     const completedOrders = orders.filter(o => o.status === "completed").slice(0, 10);
-    const activeOrdersCount = orders.filter(o => o.status === 'pending' || o.status === 'cooking').length;
+    const activeOrdersCount = pendingOrders.length + cookingOrders.length;
 
     // 2. ORDER TYPE LOGIC (Channel-based) - For logistics view
     const activeOrders = orders.filter(o => o.status !== "completed" && o.status !== "cancelled");

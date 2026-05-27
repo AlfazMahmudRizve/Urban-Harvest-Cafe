@@ -95,7 +95,7 @@ export default function Home() {
     fetchMenu();
   }, []);
 
-  const categories = ["All", ...Array.from(new Set(menuItems.map((item) => item.category)))];
+  const activeCategories = Array.from(new Set(menuItems.map((item) => item.category)));
 
   const scrollToCategory = (cat: string) => {
     const element = document.getElementById(cat);
@@ -116,7 +116,7 @@ export default function Home() {
       {/* ─── 2. UNIFIED STICKY CATEGORY NAV BAR ─── */}
       <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-latte/15 py-4 px-6 shadow-sm flex justify-center">
         <div className="flex gap-4 md:gap-6 max-w-7xl w-full justify-start md:justify-center overflow-x-auto no-scrollbar py-1">
-          {categories.filter(c => c !== "All").map((cat) => (
+          {activeCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => scrollToCategory(cat)}
@@ -139,7 +139,7 @@ export default function Home() {
 
       {/* ─── 4. MENU GRID WITH PHOTOGRAPHIC HEADERS ─── */}
       <div id="menu-start" className="max-w-7xl mx-auto px-6 py-12 space-y-20 w-full scroll-mt-24">
-        {categories.filter(c => c !== "All").map((cat) => {
+        {activeCategories.map((cat) => {
           const items = menuItems.filter(item => item.category === cat);
           if (items.length === 0) return null;
 
