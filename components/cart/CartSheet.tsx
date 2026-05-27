@@ -27,7 +27,11 @@ export default function CartSheet() {
             const { getCustomerSession } = await import("@/lib/auth");
             const session = await getCustomerSession();
             if (session) {
-                setFormData(prev => ({ ...prev, phone: session.phone }));
+                setFormData(prev => ({ 
+                    ...prev, 
+                    name: session.name || "", 
+                    phone: session.phone || "" 
+                }));
             }
         };
         fetchSession();
