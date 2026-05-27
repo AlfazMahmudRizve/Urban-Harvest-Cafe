@@ -43,16 +43,16 @@ export default function HeroSection() {
             {/* Top Control Bar (Status & Profile) */}
             <div className="absolute top-6 right-6 z-30 flex items-center gap-3">
                 {storeStatus && (
-                    <div className={`glass-card-dark flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs ${storeStatus.isOpen
-                        ? "text-green-300 border-green-500/20"
-                        : "text-red-300 border-red-500/20"
+                    <div className={`glass-card flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs bg-white/95 shadow-sm border border-latte/15 ${storeStatus.isOpen
+                        ? "text-sage"
+                        : "text-red-600"
                         }`}>
-                        <div className={`w-2 h-2 rounded-full ${storeStatus.isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
+                        <div className={`w-2 h-2 rounded-full ${storeStatus.isOpen ? "bg-sage animate-pulse" : "bg-red-600"}`} />
                         {storeStatus.isOpen ? "OPEN" : "CLOSED"}
                     </div>
                 )}
 
-                <a href="/profile" className="glass-card-dark flex items-center gap-2 text-cream px-4 py-2 rounded-full font-bold text-sm hover:bg-white/20 transition-all font-sans cursor-pointer">
+                <a href="/profile" className="glass-card flex items-center gap-2 text-espresso hover:text-sage bg-white/95 border border-latte/20 px-4 py-2 rounded-full font-bold text-sm hover:bg-cream-warm transition-all font-sans cursor-pointer shadow-sm">
                     <User size={16} /> My Profile
                 </a>
             </div>
@@ -89,7 +89,7 @@ export default function HeroSection() {
                     onClick={handleScrollDown}
                     className="btn-glow bg-sage text-cream font-bold text-xl px-12 py-5 rounded-full shadow-glow-sage hover:bg-sage/90 transition-all mt-8 mb-8 font-heading tracking-wide relative overflow-hidden cursor-pointer"
                 >
-                    <span className="relative z-10">Explore the Craft</span>
+                    <span className="relative z-10">Explore the Menu</span>
                     <div className="absolute inset-0 animate-shimmer" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)', backgroundSize: '200% 100%' }} />
                 </motion.button>
 
@@ -98,19 +98,19 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.9 }}
-                    className="flex flex-wrap justify-center gap-4 text-cream/90 font-sans"
+                    className="flex flex-wrap justify-center gap-4 text-espresso font-sans"
                 >
-                    <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+                    <div className="bg-white/95 backdrop-blur-sm border border-latte/25 rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
                         <ShieldCheck className="text-sage" size={18} />
-                        <span className="font-medium text-sm">Organic Ingredients</span>
+                        <span className="font-bold text-sm">Organic Ingredients</span>
                     </div>
-                    <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+                    <div className="bg-white/95 backdrop-blur-sm border border-latte/25 rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
                         <CheckCircle2 className="text-latte" size={18} />
-                        <span className="font-medium text-sm">Freshly Baked</span>
+                        <span className="font-bold text-sm">Freshly Baked</span>
                     </div>
-                    <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+                    <div className="bg-white/95 backdrop-blur-sm border border-latte/25 rounded-full px-4 py-2 flex items-center gap-2 shadow-sm">
                         <Heart className="text-sage" size={18} />
-                        <span className="font-medium text-sm">Community First</span>
+                        <span className="font-bold text-sm">Community First</span>
                     </div>
                 </motion.div>
             </div>

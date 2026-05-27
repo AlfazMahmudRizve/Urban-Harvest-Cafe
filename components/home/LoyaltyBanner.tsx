@@ -17,20 +17,20 @@ export default function LoyaltyBanner() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="glass-card-dark rounded-2xl p-6 md:p-8 max-w-4xl shadow-xl"
+                    className="bg-white/95 backdrop-blur-md border border-latte/15 rounded-3xl p-6 md:p-8 max-w-4xl shadow-xl"
                 >
-                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-                        <div className="flex-shrink-0 bg-cream text-espresso p-4 rounded-full shadow-lg">
+                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 text-left">
+                        <div className="flex-shrink-0 bg-sage/10 text-sage p-4 rounded-full border border-sage/25 shadow-sm">
                             <Sparkles size={32} />
                         </div>
-                        <div className="text-cream space-y-2">
-                            <h3 className="font-heading font-bold text-3xl md:text-4xl leading-tight text-latte">
-                                Sip. Savor. <span className="text-white">Save.</span>
+                        <div className="space-y-2">
+                            <h3 className="font-heading font-black text-3xl md:text-4xl leading-tight text-espresso">
+                                Sip. Savor. <span className="text-sage">Save.</span>
                             </h3>
-                            <p className="font-sans font-medium text-lg md:text-xl opacity-95">
-                                Visit us <span className="font-bold text-latte">5 times</span> & enjoy <span className="font-bold text-latte">20% OFF</span> your future cravings.
+                            <p className="font-sans font-medium text-lg md:text-xl text-espresso/85">
+                                Visit us <span className="font-black text-sage">5 times</span> & enjoy <span className="font-black text-sage">20% OFF</span> your future cravings.
                             </p>
-                            <p className="text-sm font-bold uppercase tracking-widest opacity-80 mt-2 text-sage">
+                            <p className="text-xs font-black uppercase tracking-widest text-espresso/50 pt-1">
                                 Join the Coffee Club Today
                             </p>
                         </div>
