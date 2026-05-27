@@ -6,9 +6,11 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="min-h-screen bg-dash text-espresso p-6 md:p-8 font-sans pb-32">
+        <div className="min-h-screen bg-dash text-espresso p-4 md:p-6 lg:p-8 font-sans flex flex-col">
             <DashboardHeader />
-            {children}
+            <main className="flex-1 flex flex-col min-h-0 mt-6">
+                {children}
+            </main>
         </div>
     );
 }

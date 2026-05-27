@@ -67,7 +67,7 @@ export default function KitchenPage() {
     const deliveryOrders = activeOrders.filter(o => o.order_type === 'delivery');
 
     return (
-        <div className="space-y-6 animate-in fade-in zoom-in duration-300 pb-20 max-w-[1600px] mx-auto">
+        <div className="lg:h-[calc(100vh-170px)] lg:overflow-hidden flex flex-col gap-5 animate-in fade-in zoom-in duration-300 pb-20 lg:pb-0 max-w-[1600px] w-full mx-auto">
             {/* PHASE 5: The Failsafe Queue Visual Override */}
             {missedAudioQueue.length > 0 && (
                 <div 
@@ -88,7 +88,7 @@ export default function KitchenPage() {
             )}
 
             {/* Header Control Center */}
-            <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between bg-white p-4 rounded-2xl border border-latte/10 shadow-sm">
+            <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between bg-white p-4 rounded-2xl border border-latte/10 shadow-sm flex-shrink-0">
                 <div className="flex items-center gap-2">
                     <div className="bg-orange-500/10 text-orange-600 p-2 rounded-xl">
                         <ChefHat size={22} className="animate-warm-pulse" />
@@ -142,7 +142,7 @@ export default function KitchenPage() {
             </div>
 
             {/* Compact Top Metrics Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-shrink-0">
                 <div className="bg-white rounded-2xl p-5 border border-latte/10 shadow-sm flex items-center justify-between group hover:shadow-md transition-shadow">
                     <div className="space-y-1">
                         <span className="text-xs font-bold text-espresso/45 uppercase tracking-wider">Active Cravings</span>
@@ -175,7 +175,7 @@ export default function KitchenPage() {
             </div>
 
             {/* Reorganized Workspace Mode Switcher */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-latte/10 pb-4 pt-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-latte/10 pb-4 pt-2 flex-shrink-0">
                 <div className="flex bg-cream-warm/60 p-1.5 rounded-2xl border border-latte/15 gap-1 shadow-inner-warm">
                     <button
                         onClick={() => setViewMode("workflow")}
@@ -205,10 +205,10 @@ export default function KitchenPage() {
             </div>
 
             {/* Dynamic View Workspace */}
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="flex-1 min-h-0 lg:h-full animate-in fade-in slide-in-from-bottom-2 duration-300">
                 {viewMode === "workflow" ? (
                     /* WORKFLOW KANBAN BOARD */
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 min-h-[580px] h-[calc(100vh-320px)]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full min-h-[480px]">
                         <Column
                             title="PENDING"
                             count={pendingOrders.length}
@@ -264,7 +264,7 @@ export default function KitchenPage() {
                     </div>
                 ) : (
                     /* CHANNEL LOGISTICS TABLES */
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-320px)] min-h-[580px]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full min-h-[480px]">
                         {/* Dine-In Table Container */}
                         <div className="bg-white rounded-3xl border border-latte/10 flex flex-col overflow-hidden shadow-sm h-full">
                             <div className="px-5 py-4 bg-blue-50/70 border-b border-blue-100 flex justify-between items-center flex-shrink-0">
