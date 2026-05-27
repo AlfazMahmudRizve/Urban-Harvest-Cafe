@@ -31,38 +31,38 @@ export default function AdminLogin() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-dash p-4 grain-overlay">
+            <div className="glass-card-dark p-8 rounded-2xl border border-latte/8 w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-300">
                 <div className="text-center mb-8">
-                    <h1 className="font-heading font-extrabold text-3xl text-gray-900">Admin Access 🔒</h1>
-                    <p className="text-gray-500 mt-2">Enter credentials to access the command center</p>
+                    <h1 className="font-heading font-extrabold text-3xl text-cream flex items-center justify-center gap-2">Admin Access <span>🔒</span></h1>
+                    <p className="text-latte/50 mt-2">Enter credentials to access the kitchen workspace</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Username</label>
+                        <label className="block text-sm font-bold text-latte/70 mb-2">Username</label>
                         <input
                             name="username"
                             type="text"
                             required
-                            className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-metro outline-none transition-all"
+                            className="w-full p-3 bg-dash-bg border border-latte/8 text-cream rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-mono"
                             placeholder="admin"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                        <label className="block text-sm font-bold text-latte/70 mb-2">Password</label>
                         <input
                             name="password"
                             type="password"
                             required
-                            className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-metro outline-none transition-all"
+                            className="w-full p-3 bg-dash-bg border border-latte/8 text-cream rounded-xl focus:ring-2 focus:ring-sage focus:border-transparent outline-none transition-all font-mono"
                             placeholder="••••••••"
                         />
                     </div>
 
                     {error && (
-                        <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg font-bold text-center">
+                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg font-bold text-center">
                             {error}
                         </div>
                     )}
@@ -70,7 +70,7 @@ export default function AdminLogin() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-metro text-white font-bold py-4 rounded-xl shadow-lg hover:bg-red-700 transition-all active:scale-95 flex justify-center items-center"
+                        className="w-full bg-sage hover:bg-sage/90 text-cream font-bold py-4 rounded-xl shadow-glow-sage transition-all active:scale-95 flex justify-center items-center btn-glow cursor-pointer"
                     >
                         {isLoading ? <Loader2 className="animate-spin" /> : "Unlock Dashboard"}
                     </button>

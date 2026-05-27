@@ -36,14 +36,14 @@ export default function InfoSection() {
     }, []);
 
     const serviceIcons: Record<string, React.ReactNode> = {
-        "Delivery": <Truck size={20} className="text-espresso" />,
-        "Takeout": <ShoppingBag size={20} className="text-espresso" />,
-        "Dine-in": <Utensils size={20} className="text-espresso" />,
-        "In-store pickup": <MapPin size={20} className="text-espresso" />,
+        "Delivery": <Truck size={20} className="text-sage" />,
+        "Takeout": <ShoppingBag size={20} className="text-sage" />,
+        "Dine-in": <Utensils size={20} className="text-sage" />,
+        "In-store pickup": <MapPin size={20} className="text-sage" />,
     };
 
     return (
-        <section className="py-12 bg-white">
+        <section className="py-16 bg-cream-warm">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start max-w-5xl mx-auto">
 
@@ -54,14 +54,16 @@ export default function InfoSection() {
                         viewport={{ once: true, margin: "-60px" }}
                         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <div className="flex items-center gap-3 mb-6">
-                            <Clock className="text-espresso" size={32} />
-                            <h2 className="font-heading font-bold text-3xl text-espresso">Cafe Hours</h2>
+                        <div className="divider-flourish mb-6">
+                            <h2 className="font-heading font-bold text-3xl text-espresso px-4 flex items-center gap-3">
+                                <Clock className="text-espresso" size={28} />
+                                Cafe Hours
+                            </h2>
                         </div>
 
-                        <div className="bg-cream rounded-2xl p-6 shadow-sm border border-latte/20">
+                        <div className="card-premium shadow-inner-warm p-6">
                             {/* Status Badge */}
-                            <div className={`mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm transition-colors duration-300 ${status?.isOpen ? "bg-sage/10 text-sage" : "bg-red-100 text-red-700"
+                            <div className={`mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm backdrop-blur-sm border transition-colors duration-300 ${status?.isOpen ? "bg-sage/10 border-sage/20 text-sage" : "bg-red-100 border-red-200 text-red-700"
                                 }`}>
                                 <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${status?.isOpen ? "bg-sage animate-pulse" : "bg-red-600"}`} />
                                 {status?.message}
@@ -82,7 +84,7 @@ export default function InfoSection() {
                                     </motion.li>
                                 ))}
                             </ul>
-                            <p className="text-xs text-gray-400 mt-4 text-center">Timezone: Asia/Dhaka (GMT+6)</p>
+                            <p className="text-xs text-espresso/40 mt-4 text-center">Timezone: Asia/Dhaka (GMT+6)</p>
                         </div>
                     </motion.div>
 
@@ -93,9 +95,11 @@ export default function InfoSection() {
                         viewport={{ once: true, margin: "-60px" }}
                         transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <div className="flex items-center gap-3 mb-6">
-                            <Utensils className="text-latte" size={32} />
-                            <h2 className="font-heading font-bold text-3xl text-espresso">Services</h2>
+                        <div className="divider-flourish mb-6">
+                            <h2 className="font-heading font-bold text-3xl text-espresso px-4 flex items-center gap-3">
+                                <Utensils className="text-latte" size={28} />
+                                Services
+                            </h2>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -106,9 +110,9 @@ export default function InfoSection() {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.35, delay: i * 0.08 }}
-                                    className="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-latte/20 hover:border-latte transition-colors duration-200 group"
+                                    className="card-premium hover-lift flex items-center gap-3 p-4 group cursor-pointer"
                                 >
-                                    <div className="p-2 bg-cream rounded-lg group-hover:bg-latte/20 transition-colors duration-200">
+                                    <div className="p-2 bg-sage/10 text-sage rounded-xl group-hover:bg-sage/20 transition-colors duration-200">
                                         {serviceIcons[service]}
                                     </div>
                                     <span className="font-bold text-espresso">{service}</span>
@@ -127,7 +131,9 @@ export default function InfoSection() {
                     >
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
                             <div className="flex flex-col items-center md:items-start">
-                                <MapPin className="text-espresso mb-2" size={24} />
+                                <div className="w-12 h-12 rounded-full bg-sage/10 flex items-center justify-center mb-3">
+                                    <MapPin className="text-sage" size={22} />
+                                </div>
                                 <h3 className="font-bold text-espresso">Visit Us</h3>
                                 <p className="text-espresso/70 text-sm mt-1 font-sans">
                                     House 123, Road 4, Block B<br />
@@ -135,17 +141,21 @@ export default function InfoSection() {
                                 </p>
                             </div>
                             <div className="flex flex-col items-center md:items-start">
-                                <Phone className="text-latte mb-2" size={24} />
+                                <div className="w-12 h-12 rounded-full bg-sage/10 flex items-center justify-center mb-3">
+                                    <Phone className="text-sage" size={22} />
+                                </div>
                                 <h3 className="font-bold text-espresso">Call Us</h3>
                                 <p className="text-espresso/70 text-sm mt-1 font-sans">
-                                    <a href="tel:+8801234567890" className="hover:text-sage transition-colors duration-200">+880 1234-567890</a>
+                                    <a href="tel:+8801234567890" className="hover:text-sage transition-colors duration-200 cursor-pointer">+880 1234-567890</a>
                                 </p>
                             </div>
                             <div className="flex flex-col items-center md:items-start">
-                                <Mail className="text-espresso mb-2" size={24} />
+                                <div className="w-12 h-12 rounded-full bg-sage/10 flex items-center justify-center mb-3">
+                                    <Mail className="text-sage" size={22} />
+                                </div>
                                 <h3 className="font-bold text-espresso">Email Us</h3>
                                 <p className="text-espresso/70 text-sm mt-1 font-sans">
-                                    <a href="mailto:urbanharvest.cafe@gmail.com" className="hover:text-sage transition-colors duration-200">urbanharvest.cafe@gmail.com</a>
+                                    <a href="mailto:urbanharvest.cafe@gmail.com" className="hover:text-sage transition-colors duration-200 cursor-pointer">urbanharvest.cafe@gmail.com</a>
                                 </p>
                             </div>
                         </div>

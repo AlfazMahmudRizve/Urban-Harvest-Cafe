@@ -31,14 +31,30 @@ export default async function RootLayout({
       <body className={`${playfair.variable} ${lato.variable} font-sans bg-cream text-espresso`}>
         {children}
         <OrderReadyToast customerId={session?.id} />
-        <footer className="bg-white border-t py-8 mt-12">
+
+        {/* Decorative gradient divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-latte to-transparent" />
+
+        <footer className="bg-espresso-deep py-12">
           <div className="container mx-auto px-4 text-center">
-            <p className="font-bold text-espresso">Urban Harvest Cafe &copy; {new Date().getFullYear()}</p>
-            <div className="flex justify-center gap-4 mt-2 text-sm text-espresso/80">
-              <p><a href="tel:+8801234567890" className="hover:text-sage">+880 1234-567890</a> | <a href="mailto:urbanharvest.cafe@gmail.com" className="hover:text-sage">urbanharvest.cafe@gmail.com</a></p>
+            <p className="font-heading font-bold text-2xl text-cream tracking-wide">
+              Urban Harvest Cafe
+            </p>
+            <p className="text-cream/50 text-sm mt-2 font-sans">&copy; {new Date().getFullYear()} &mdash; Artisan Eats. Locally Sourced.</p>
+
+            <div className="flex justify-center gap-6 mt-5 text-sm text-cream/70 font-sans">
+              <a href="tel:+8801234567890" className="hover:text-latte transition-colors duration-300 cursor-pointer">+880 1234-567890</a>
+              <span className="text-cream/30">|</span>
+              <a href="mailto:urbanharvest.cafe@gmail.com" className="hover:text-latte transition-colors duration-300 cursor-pointer">urbanharvest.cafe@gmail.com</a>
             </div>
-            <p className="text-xs text-espresso/60 mt-4">
-              Designed & Developed by <a href="https://whoisalfaz.me" target="_blank" className="text-espresso font-bold hover:underline">Alfaz Mahmud Rizve</a>
+
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-latte/40 to-transparent mx-auto mt-6 mb-4" />
+
+            <p className="text-xs text-cream/40 font-sans">
+              Designed & Developed by{' '}
+              <a href="https://whoisalfaz.me" target="_blank" className="text-latte/70 font-bold hover:text-latte transition-colors duration-300 cursor-pointer">
+                Alfaz Mahmud Rizve
+              </a>
             </p>
           </div>
         </footer>

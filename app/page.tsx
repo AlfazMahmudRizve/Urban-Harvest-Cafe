@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen pb-32 md:pb-0">
+    <main className="min-h-screen pb-32 md:pb-0 bg-warm-texture">
       <Suspense fallback={null}><TableQRListener /></Suspense>
       <StoreStatusBanner />
       <HeroSection />
@@ -75,15 +75,15 @@ export default function Home() {
       {/* Loyalty Banner - Unique Positioning */}
       <LoyaltyBanner />
 
-      <div id="menu-start" className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-latte/20 py-4 px-4 overflow-x-auto no-scrollbar">
+      <div id="menu-start" className="sticky top-0 z-40 glass-card border-b border-latte/20 py-4 px-4 overflow-x-auto no-scrollbar rounded-none">
         <div className="flex gap-4 md:justify-center min-w-max">
           {categories.filter(c => c !== "All").map((cat) => (
             <button
               key={cat}
               onClick={() => scrollToCategory(cat)}
-              className={`px-6 py-2 rounded-full font-bold transition-all whitespace-nowrap font-sans ${activeCategory === cat
-                ? "bg-espresso text-cream shadow-md"
-                : "bg-cream text-espresso/70 hover:bg-latte/20 hover:text-espresso"
+              className={`px-6 py-2 rounded-full font-bold transition-all whitespace-nowrap font-sans cursor-pointer ${activeCategory === cat
+                ? "bg-espresso text-cream shadow-glow-espresso"
+                : "bg-cream-warm/80 text-espresso/70 hover:bg-latte-light/40"
                 }`}
             >
               {cat}
@@ -92,7 +92,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-12 bg-cream">
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-12">
         {/* Render sections based on categories */}
         {categories.filter(c => c !== "All").map((cat) => {
           const items = menuItems.filter(item => item.category === cat);
@@ -100,10 +100,11 @@ export default function Home() {
 
           return (
             <section key={cat} id={cat} className="scroll-mt-24">
-              <h2 className="font-heading font-bold text-3xl md:text-4xl mb-6 flex items-center gap-2 text-espresso">
-                {cat}
-                <div className="h-px bg-latte flex-1 ml-4 opacity-50" />
-              </h2>
+              <div className="divider-flourish mb-6">
+                <h2 className="font-heading font-bold text-3xl md:text-4xl text-espresso px-4">
+                  {cat}
+                </h2>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {items.map((item) => (
                   <MenuCard
