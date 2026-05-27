@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { CheckCircle, ArrowRight, Home, Send, Bell, Check, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase/client";
+import { getSecureOrderForSuccess } from "@/app/actions/customerData";
 
 function SuccessContent() {
     const searchParams = useSearchParams();
@@ -26,17 +27,16 @@ function SuccessContent() {
 
         async function loadOrderDetails() {
             try {
-                const { data, error } = await supabase
-                    .from('orders')
-                    .select('*, customers(*)')
-                    .eq('id', orderId)
-                    .single();
+                const res = await getSecureOrderForSuccess(orderId!);
 
-                if (data && !error) {
+                if (res.success && res.data) {
+                    const data = res.data;
                     setOrder(data);
                     if (data.customers) {
                         setCustomer(data.customers);
                     }
+                } else {
+                    console.error("Failed to load secure order:", res.error);
                 }
             } catch (err) {
                 console.error("Error loading order:", err);

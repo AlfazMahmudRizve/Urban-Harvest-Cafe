@@ -120,3 +120,24 @@ export async function getSecureKitchenCustomers() {
         return { success: false, error: error.message };
     }
 }
+
+export async function getSecureOrderForSuccess(orderId: string) {
+    try {
+        const session = await getCustomerSession();
+        if (!session) return { success: false, error: "Not authenticated" };
+
+        const { data, error } = await supabase
+            .from("orders")
+            .select("*, customers(*)")
+            .eq("id", orderId)
+            .eq("customer_id", session.id)
+            .single();
+
+        if (error) throw new Error(error.message);
+        return { success: true, data };
+    } catch (error: any) {
+        console.error("Failed to fetch secure success order:", error);
+        return { success: false, error: error.message };
+    }
+}
+
