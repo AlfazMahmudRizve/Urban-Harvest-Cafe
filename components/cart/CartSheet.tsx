@@ -14,7 +14,7 @@ export default function CartSheet() {
     const [showCheckoutForm, setShowCheckoutForm] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({ name: "", phone: "", tableNumber: "", address: "" });
-    const [orderType, setOrderType] = useState<'dine-in' | 'takeout' | 'delivery'>(scannedTableNumber ? 'dine-in' : 'dine-in');
+    const [orderType, setOrderType] = useState<'dine-in' | 'takeout' | 'delivery'>(scannedTableNumber ? 'dine-in' : 'takeout');
     const router = useRouter();
     const isTableLocked = !!scannedTableNumber;
 
@@ -307,12 +307,19 @@ export default function CartSheet() {
                                                 <button
                                                     key={type}
                                                     type="button"
-                                                    onClick={() => setOrderType(type)}
+                                                    onClick={() => {
+                                                        if (type === 'dine-in' && !isTableLocked) {
+                                                            setError("Dine-in is only available when scanning a physical QR code at a table!");
+                                                            return;
+                                                        }
+                                                        setOrderType(type);
+                                                    }}
                                                     className={cn(
                                                         "py-2 rounded-lg text-sm font-bold capitalize transition-all",
                                                         orderType === type
                                                             ? "bg-white text-espresso shadow-sm"
-                                                            : "text-gray-500 hover:text-espresso"
+                                                            : "text-gray-500 hover:text-espresso",
+                                                        type === 'dine-in' && !isTableLocked && "opacity-40 cursor-not-allowed line-through"
                                                     )}
                                                 >
                                                     {type.replace("-", " ")}
