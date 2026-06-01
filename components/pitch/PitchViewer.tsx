@@ -67,59 +67,60 @@ export default function PitchViewer() {
     ]);
     const [notifiedAlert, setNotifiedAlert] = useState<string | null>(null);
 
+    // STORYTELLING-DRIVEN SLIDES - HUMAN INTERPRETATION & ENGAGEMENT
     const slides: Slide[] = [
         {
-            title: "Scaling to One: The Reality of Solo Retail",
-            subtitle: "The Solo Operator's Trap",
+            title: "The Barista's Worst Nightmare: The 8:00 AM Rush",
+            subtitle: "The Solo Operator's Nightmare",
             presenterNotes: [
-                "Every micro-cafe owner shares the same dream: brewing amazing coffee. But the reality is a nightmare of constant multitasking.",
-                "You are cashiers, baristas, servers, and administrators all at once. Every time you leave the espresso bar to swipe a card, your kitchen halts.",
-                "Traditional POS systems are built for corporate networks with armies of staff. Today, we show how one single person can run a busy cafe alone."
+                "Meet Marcus. He brews the best pour-overs in the neighborhood, but he runs his boutique cafe completely alone.",
+                "It is 8:00 AM. A sudden line of 15 tired, impatient commuters forms at his counter.",
+                "Marcus is trapped in a manual cycle. Every time he leaves the espresso bar to swipe a card or write down an order, the kitchen freezes. Milk steam dies, coffee shots over-extract, and he is losing $200 an hour simply because he only has two hands."
             ]
         },
         {
-            title: "Urban Harvest Cafe: The Barista Co-Pilot",
-            subtitle: "A cloud-native SaaS system built for high-volume solo shops",
+            title: "Introducing the Invisible Co-Pilot",
+            subtitle: "A cloud-native helper built for solo shops",
             presenterNotes: [
-                "This is the core solution. Urban Harvest is the digital assistant that acts as the barista's host, cashier, and server.",
-                "By moving order building, payment processing, table locking, and notifications to background code, the kitchen runs by itself.",
-                "It is fully serverless, highly responsive, and requires absolutely zero hardware investments."
+                "Marcus doesn't need to hire expensive cashiers or waiters—he doesn't have the margins for it.",
+                "He deploys Urban Harvest Cafe. A serverless co-pilot that turns his customer's phones into visual self-checkout terminals.",
+                "While Marcus focuses 100% of his energy on pulling perfect espresso shots, background code manages order taking, Stripe payment routing, location verification, and instant kitchen alerts."
             ]
         },
         {
-            title: "Zero-Friction Customer Experience",
-            subtitle: "Browse, customize, pay, and subscribe without downloading anything",
+            title: "Frictionless Scan-to-Order & Tamper Protection",
+            subtitle: "Browse, customize, pay, and sit down in 15 seconds",
             presenterNotes: [
-                "Let's look at the customer flow. When seated, a guest scans the table QR. Next.js cookies auto-fill their profile to bypass form-filling.",
-                "But what if they try to cheat and order Dine-in from home? Our parameter safeguard strikes through Dine-in and locks it out unless a physical table QR signature is scanned.",
-                "Check out the real live cafe storefront inside our premium browser mock simulator frame! It is massive, responsive, and completely interactive."
+                "A customer sits down at Table 3 and scans a table QR code. In less than 15 seconds, they browse the menu, customize their oat milk, and checkout with Stripe. No app installs, no friction.",
+                "But what if someone tries to cheat the system and order Dine-In from home?",
+                "Marcus's system checks the scanned signature coordinates. If it doesn't match a physical table, Dine-In is instantly locked out, protecting his seats from fraud. Try interacting with this live widescreen store simulator on the right!"
             ]
         },
         {
-            title: "Solving 'Browser Isolation' in Realtime",
+            title: "Keeping Guests Connected: Solving the Isolation Problem",
             subtitle: "Multi-channel off-browser alert system using Web Push & Telegram",
             presenterNotes: [
-                "Web browsers isolate sites. When you close a tab, communication dies. We solved this with background notifications.",
-                "HTML5 Service Workers manage secure push alerts, while our Telegram Webhook binds active orders to direct chat notifications.",
-                "Using Supabase real-time channels, the success screen instantly transitions to 'Connected!' the second they click Start in Telegram."
+                "Once checked out, customers immediately close their browser tabs to check email. Under normal systems, communication dies.",
+                "Urban Harvest solves this by pairing the guest's checkout page to Marcus's custom Telegram Bot and Web Push service workers.",
+                "The second they tap 'Start' in Telegram, our Supabase Realtime channel captures the Postgres update and instantly syncs their screen. They can now lock their screens and wait."
             ]
         },
         {
-            title: "The Kitchen Console: Live Command Center",
+            title: "Operation Silent Kitchen: The Barista's Dashboard",
             subtitle: "A dark-themed locked-viewport Kanban console with sound indicators",
             presenterNotes: [
-                "This is what the barista sees. It is a lock-viewport Kanban board: Pending to Cooking to Ready.",
-                "As orders arrive, a high-pitch acoustic chime plays. They prepare the coffee, tap 'Ready', and the bot automatically pings the customer's phone.",
-                "Try playing with the interactive Kitchen Simulator! Tap the order buttons to move orders between stages, trigger acoustic chime alerts, and send mock customer notifications."
+                "Behind the counter, Marcus operates a locked-viewport dark Kanban board. No paper ticket mess, no confusion.",
+                "As orders arrive, a high-pitch acoustic chime alerts Marcus. He accepts, prepares the drink, and taps Mark Ready.",
+                "Try playing with the simulator! Tapping accepting/cooking triggers a physical Cafe Chime, automatically pings the customer's phone via Telegram, and alerts them in silence."
             ]
         },
         {
-            title: "Business Viability & Acquisition Opportunities",
+            title: "The Ultimate Solo-Operator SaaS: A High-Margin Business",
             subtitle: "High-value SaaS architecture, zero platform fees, ready for launch",
             presenterNotes: [
-                "Finally, let's talk business. Urban Harvest charges 0% in platform fees because payments route directly through your Stripe.",
-                "It runs serverless on Next.js, Supabase, and Vercel. It is the perfect blueprint for a white-label SaaS product.",
-                "If you are an investor, cafe owner, or looking to acquire this exact codebase, let's connect today!"
+                "Urban Harvest is the ultimate high-margin template for micro-retailers. It charges 0% in platform fees because payments route directly through Marcus's Stripe.",
+                "Built completely serverless on Next.js, Supabase, and Vercel, the monthly running cost is literally $0.",
+                "If you are an investor, cafe owner, or looking to deploy white-labeled cafe platforms worldwide, let's close this deal today!"
             ]
         }
     ];
@@ -232,13 +233,13 @@ export default function PitchViewer() {
         playCafeChime();
 
         if (nextStatus === "cooking") {
-            setNotifiedAlert(`🍳 Started preparing order for ${customerName}!`);
+            setNotifiedAlert(`🍳 Marcus started preparing the double espresso for ${customerName}!`);
             setTimeout(() => setNotifiedAlert(null), 3500);
         } else if (nextStatus === "ready") {
-            setNotifiedAlert(`📲 Sarah K. notified via @Urban_cafe_bot!`);
+            setNotifiedAlert(`📲 Sarah K. was pinged with a custom Telegram order alert!`);
             setTimeout(() => setNotifiedAlert(null), 3500);
         } else if (nextStatus === "archived") {
-            setNotifiedAlert(`📦 Order complete! Archiving ticket.`);
+            setNotifiedAlert(`📦 Ticket completed! Kitchen is silent and focused.`);
             setTimeout(() => setNotifiedAlert(null), 3500);
         }
 
@@ -256,7 +257,7 @@ export default function PitchViewer() {
             { id: "1043", customer: "Alex M.", items: "2x Butter Croissant, 1x Latte", type: "Takeout", status: "cooking", time: "5m ago" },
             { id: "1044", customer: "David L.", items: "1x Avocado Toast", type: "Dine-In (Table 1)", status: "ready", time: "8m ago" }
         ]);
-        setNotifiedAlert("🔄 Simulator reset back to incoming queues!");
+        setNotifiedAlert("🔄 Kitchen console queue has been reset!");
         setTimeout(() => setNotifiedAlert(null), 3000);
     };
 
@@ -390,14 +391,14 @@ export default function PitchViewer() {
                             </h2>
                             <div className="w-20 h-1 bg-gradient-to-r from-sage to-transparent rounded-full" />
                             
-                            {/* Larger Body Paragraph */}
+                            {/* STORYTELLING DESCRIPTION NARRATIVE */}
                             <p className="text-base md:text-lg text-latte/70 max-w-xl leading-relaxed font-jakarta font-medium">
-                                {currentSlide === 0 && "Steaming espresso, managing tickets, and taking card orders concurrently creates steep operational bottlenecks. We bypass manual labor with code."}
-                                {currentSlide === 1 && "A complete serverless storefront coupled to an admin Kanban command console that handles payments, order processing, and customer alerts seamlessly."}
-                                {currentSlide === 2 && "Pre-filled user profiles lock into physical table coordinates upon scanning. Direct direct-visit Dine-in attempts are dynamically locked out to prevent home orders."}
-                                {currentSlide === 3 && "By combining persistent VAPID Web Push service workers and deep-linked Telegram bot webhooks, alerts ping directly in customer pockets off-browser."}
-                                {currentSlide === 4 && "Chefs work with an automated, sound-signaled dark console. Advancing status columns immediately triggers background notification APIs."}
-                                {currentSlide === 5 && "Bypassing transaction platform taxes and infrastructure overheads makes Urban Harvest the ultimate high-margin white-label template for cafes."}
+                                {currentSlide === 0 && "Brewing specialty pour-overs, steaming milk, managing active orders, and swiping credit cards concurrently creates massive operational gridlock for solo operators. Marcus is losing revenue because he only has two hands."}
+                                {currentSlide === 1 && "Instead of hiring expensive waiters, Marcus deploys an automated second set of hands: a serverless ordering co-pilot. All payment routing, database syncing, and customer notifications run silently in the background."}
+                                {currentSlide === 2 && "Sarah sits down at Table 3 and scans a table QR. In less than 15 seconds, she customizes her espresso and checks out via Stripe without installing a thing. Dine-in fraud is securely blocked by table-scan coordinate checks."}
+                                {currentSlide === 3 && "Once checked out, Sarah locks her screen and closes the tab. Traditional web apps lose touch, but Urban Harvest bridges the gap. By binding her order to service workers and Telegram webhooks, we ensure she stays connected off-browser."}
+                                {currentSlide === 4 && "Behind the counter, Marcus operates in total peace. Incoming orders trigger a warm cafe bell chime on his locked dark console. A single tap on his screen advances the order and immediately pings the customer's Telegram bot."}
+                                {currentSlide === 5 && "Bypassing typical food aggregator commissions yields direct-to-Stripe profitability. Built completely serverless, the running cost is literally $0, creating the ultimate high-value white-label SaaS template for micro-retail."}
                             </p>
                         </div>
 
@@ -409,17 +410,17 @@ export default function PitchViewer() {
                             {/* Slide 1 Visual: Solo Bottleneck illustration */}
                             {currentSlide === 0 && (
                                 <div className="space-y-5 w-full max-w-md">
-                                    <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 flex items-center gap-5">
+                                    <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 flex items-center gap-5 animate-pulse">
                                         <div className="w-12 h-12 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center font-outfit font-extrabold text-lg">1</div>
-                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">Espresso Grinder Idle</p><p className="text-xs md:text-sm text-latte/50">Taking manual register card payment</p></div>
+                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">Espresso Machine Halts</p><p className="text-xs md:text-sm text-latte/50">Marcus is away swiping a register card</p></div>
                                     </div>
                                     <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 flex items-center gap-5 opacity-75">
                                         <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-outfit font-extrabold text-lg">2</div>
-                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">Table Orders Piling Up</p><p className="text-xs md:text-sm text-latte/50">Wiping down physical menu cards</p></div>
+                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">commuters Impatient</p><p className="text-xs md:text-sm text-latte/50">Table menus dirty, orders piling up</p></div>
                                     </div>
                                     <div className="bg-gray-500/10 border border-latte/8 rounded-2xl p-5 flex items-center gap-5 opacity-50">
                                         <div className="w-12 h-12 rounded-xl bg-gray-500/20 text-latte/60 flex items-center justify-center font-outfit font-extrabold text-lg">3</div>
-                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">Shouting Order Names</p><p className="text-xs md:text-sm text-latte/50">Customer left browser tab closed</p></div>
+                                        <div className="text-left"><p className="font-outfit font-bold text-cream text-base">Shouting Names in Noise</p><p className="text-xs md:text-sm text-latte/50">Commuter closed the storefront browser tab</p></div>
                                     </div>
                                 </div>
                             )}
@@ -429,11 +430,11 @@ export default function PitchViewer() {
                                 <div className="grid grid-cols-2 gap-5 w-full max-w-md">
                                     <div className="bg-black/30 border border-latte/5 p-5 rounded-2xl flex flex-col justify-between min-h-[110px] hover:border-sage/20 transition-all cursor-default">
                                         <Smartphone className="text-sage mb-2" size={28} />
-                                        <p className="text-base font-outfit font-bold text-cream text-left">Telegram App</p>
+                                        <p className="text-base font-outfit font-bold text-cream text-left">Customer App</p>
                                     </div>
                                     <div className="bg-black/30 border border-latte/5 p-5 rounded-2xl flex flex-col justify-between min-h-[110px] hover:border-sage/20 transition-all cursor-default">
                                         <Tv className="text-sage mb-2" size={28} />
-                                        <p className="text-base font-outfit font-bold text-cream text-left">Kanban Screen</p>
+                                        <p className="text-base font-outfit font-bold text-cream text-left">Kitchen Monitor</p>
                                     </div>
                                     <div className="bg-black/30 border border-latte/5 p-5 rounded-2xl flex flex-col justify-between min-h-[110px] hover:border-sage/20 transition-all cursor-default">
                                         <Database className="text-sage mb-2" size={28} />
@@ -441,7 +442,7 @@ export default function PitchViewer() {
                                     </div>
                                     <div className="bg-black/30 border border-latte/5 p-5 rounded-2xl flex flex-col justify-between min-h-[110px] hover:border-sage/20 transition-all cursor-default">
                                         <DollarSign className="text-sage mb-2" size={28} />
-                                        <p className="text-base font-outfit font-bold text-cream text-left">Direct Stripe</p>
+                                        <p className="text-base font-outfit font-bold text-cream text-left">Stripe Split Payments</p>
                                     </div>
                                 </div>
                             )}
@@ -525,21 +526,21 @@ export default function PitchViewer() {
                                 <div className="flex flex-col gap-5 w-full max-w-md">
                                     <div className="flex justify-between items-center gap-3">
                                         <div className="flex-1 bg-white/5 border border-latte/10 p-4 rounded-xl text-center">
-                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">Order Success Page</p>
+                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">Marcus's Success Page</p>
                                             <span className="text-[10px] text-latte/50 font-mono">Listening...</span>
                                         </div>
                                         <div className="w-16 h-0.5 bg-dashed border-t border-latte/20" />
                                         <div className="flex-1 bg-sage/15 border border-sage/30 p-4 rounded-xl text-center shadow-glow-sage animate-pulse">
-                                            <p className="text-xs md:text-sm font-outfit font-bold text-sage">Telegram Bot</p>
+                                            <p className="text-xs md:text-sm font-outfit font-bold text-sage">Sarah's Telegram bot</p>
                                             <span className="text-[10px] text-sage font-mono">Start Clicked</span>
                                         </div>
                                     </div>
                                     <div className="bg-black/30 border border-latte/5 p-5 rounded-xl text-left">
                                         <div className="flex items-center gap-2 mb-1.5">
                                             <CheckCircle className="text-sage" size={18} />
-                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">Supabase Realtime Sync</p>
+                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">Supabase Real-time Pub-Sub</p>
                                         </div>
-                                        <p className="text-xs text-latte/50 font-mono leading-relaxed">POSTGRES UPDATE event caught. Success state updated instantly.</p>
+                                        <p className="text-xs text-latte/50 font-mono leading-relaxed">Sarah opens Telegram -> clicks Start -> Server hooks update customers table -> Pub-Sub instantly pings Marcus's page.</p>
                                     </div>
                                 </div>
                             )}
@@ -552,10 +553,10 @@ export default function PitchViewer() {
                                         <div className="flex items-center gap-2">
                                             <span className="w-2 h-2 bg-sage rounded-full animate-ping" />
                                             <span className="w-2 h-2 bg-sage rounded-full absolute" />
-                                            <span className="text-cream font-bold tracking-wider uppercase text-[10px]">Connected Console</span>
+                                            <span className="text-cream font-bold tracking-wider uppercase text-[10px]">Marcus's Console</span>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <span className="bg-white/5 border border-latte/10 text-latte/65 px-2.5 py-0.5 rounded font-mono text-[9px]">Avg: 4m</span>
+                                            <span className="bg-white/5 border border-latte/10 text-latte/65 px-2.5 py-0.5 rounded font-mono text-[9px]">Peak Wait: 4m</span>
                                             <button 
                                                 onClick={resetKitchenDemo}
                                                 className="px-2.5 py-0.5 border border-sage/35 text-sage bg-sage/10 hover:bg-sage/20 rounded font-bold text-[9px] transition-all cursor-pointer"
@@ -653,7 +654,6 @@ export default function PitchViewer() {
                                                         layoutId={order.id}
                                                         className="bg-[#241E1A] border border-sage/25 p-2.5 rounded-lg text-left relative overflow-hidden"
                                                     >
-                                                        {/* Simulated dynamic chime ring highlight */}
                                                         <div className="absolute top-0 right-0 w-12 h-12 bg-sage/5 blur-sm rounded-full animate-pulse-glow" />
                                                         
                                                         <div className="flex justify-between items-start mb-1 text-[10px]">
