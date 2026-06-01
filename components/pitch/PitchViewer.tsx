@@ -526,12 +526,12 @@ export default function PitchViewer() {
                                 <div className="flex flex-col gap-5 w-full max-w-md">
                                     <div className="flex justify-between items-center gap-3">
                                         <div className="flex-1 bg-white/5 border border-latte/10 p-4 rounded-xl text-center">
-                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">Marcus's Success Page</p>
+                                            <p className="text-xs md:text-sm font-outfit font-bold text-cream">{"Marcus's Success Page"}</p>
                                             <span className="text-[10px] text-latte/50 font-mono">Listening...</span>
                                         </div>
                                         <div className="w-16 h-0.5 bg-dashed border-t border-latte/20" />
                                         <div className="flex-1 bg-sage/15 border border-sage/30 p-4 rounded-xl text-center shadow-glow-sage animate-pulse">
-                                            <p className="text-xs md:text-sm font-outfit font-bold text-sage">Sarah's Telegram bot</p>
+                                            <p className="text-xs md:text-sm font-outfit font-bold text-sage">{"Sarah's Telegram bot"}</p>
                                             <span className="text-[10px] text-sage font-mono">Start Clicked</span>
                                         </div>
                                     </div>
@@ -540,7 +540,7 @@ export default function PitchViewer() {
                                             <CheckCircle className="text-sage" size={18} />
                                             <p className="text-xs md:text-sm font-outfit font-bold text-cream">Supabase Real-time Pub-Sub</p>
                                         </div>
-                                        <p className="text-xs text-latte/50 font-mono leading-relaxed">Sarah opens Telegram -> clicks Start -> Server hooks update customers table -> Pub-Sub instantly pings Marcus's page.</p>
+                                        <p className="text-xs text-latte/50 font-mono leading-relaxed">{"Sarah opens Telegram -> clicks Start -> Server hooks update customers table -> Pub-Sub instantly pings Marcus's page."}</p>
                                     </div>
                                 </div>
                             )}
@@ -553,7 +553,7 @@ export default function PitchViewer() {
                                         <div className="flex items-center gap-2">
                                             <span className="w-2 h-2 bg-sage rounded-full animate-ping" />
                                             <span className="w-2 h-2 bg-sage rounded-full absolute" />
-                                            <span className="text-cream font-bold tracking-wider uppercase text-[10px]">Marcus's Console</span>
+                                            <span className="text-cream font-bold tracking-wider uppercase text-[10px]">{"Marcus's Console"}</span>
                                         </div>
                                         <div className="flex items-center gap-3">
                                             <span className="bg-white/5 border border-latte/10 text-latte/65 px-2.5 py-0.5 rounded font-mono text-[9px]">Peak Wait: 4m</span>
